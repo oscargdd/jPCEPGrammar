@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <title>PCEP LIBRARY</title>
+    <link rel="stylesheet" type="text/css" href="../css/pcep.css" />
+    <script src="../../jquery/jquery-2.1.0.js"></script>
+     <script src="../js/jPCEPGrammar.js" type="text/javascript"></script>
+      
+</head>
+
+<body >
+    <header>
+    <h1>Play with the grammar of <span> PCEP</span> </h1>
+    </header>
+
+    <div id="pcep_input">
+      <form id = "pcep_message">
+         <h1> PCEP input</h1>
+        Select PCEP Message
+      <select name="message_name">
+        <option value="PCReqMessage">PCReq Message</option>
+        <option value="PCRepMessage">PCRep Message</option>
+       
+      </select>
+      <p>
+      <input type="checkbox" name="option1" value="Milk" checked> RFC 5440<br>
+      <input type="checkbox" name="option2" value="Butter" checked> RFC 5520<br>
+      <input type="checkbox" name="option3" value="Cheese"> RFC 5521<br>
+      </p>
+      </form>
+      <button type="button" form= "pcep_message" onclick="jPCEPGrammar.draw_message(message_name.value)">Show grammar</button>
+     
+    
+
+      </div>
+
+      <div id="pcep_grammar">
+      </div>
+
+</body>
+
+</html>
