@@ -35,7 +35,10 @@ jPCEPGrammar = {};
 		this.getHTML = function () {
 			var newElem;
 			if (this.type == "object"){
-				console.log( "getHTML object "+this.name);
+				newElem = $('<span />');
+				newElem.addClass("object."+this.rfc);
+				newElem.append('&#60;'+ this.name+'&#62;');
+			} else if (this.type == "header") {
 				newElem = $('<span />');
 				newElem.addClass("object."+this.rfc);
 				newElem.append('&#60;'+ this.name+'&#62;');
@@ -116,25 +119,31 @@ jPCEPGrammar = {};
 		newElem.prepend(pcep.messages[message_name].getHTML());
 	}
 
+	//Common Header
+	pcep_common_header = new pcep.pcep_element();
+	pcep_common_header.type="header";
+	pcep_common_header.name="Common Header";
+	pcep_common_header.rfc="RFC5440";
+
 	//Objects
 	
 	//RP Object
 	pcep.objects["RP"] = new pcep.pcep_element();
-	pcep.objects["RP"].type="object",
-	pcep.objects["RP"].name="RP",
-	pcep.objects["RP"].rfc="RFC5440"
+	pcep.objects["RP"].type="object";
+	pcep.objects["RP"].name="RP";
+	pcep.objects["RP"].rfc="RFC5440";
 
 	//END-POINTS Object
 	pcep.objects["ENDPOINTS"] = new pcep.pcep_element();
-	pcep.objects["ENDPOINTS"].type="object",
-	pcep.objects["ENDPOINTS"].name="END-POINTS",
-	pcep.objects["ENDPOINTS"].rfc="RFC5440"
+	pcep.objects["ENDPOINTS"].type="object";
+	pcep.objects["ENDPOINTS"].name="END-POINTS";
+	pcep.objects["ENDPOINTS"].rfc="RFC5440";
 
 	//LSPA Object
 	pcep.objects["LSPA"] = new pcep.pcep_element();
-	pcep.objects["LSPA"].type="object",
-	pcep.objects["LSPA"].name="LSPA",
-	pcep.objects["LSPA"].rfc="RFC5440"
+	pcep.objects["LSPA"].type="object";
+	pcep.objects["LSPA"].name="LSPA";
+	pcep.objects["LSPA"].rfc="RFC5440";
 
 	//BANDWIDTH Object
 	pcep.objects["BANDWIDTH"] = new pcep.pcep_element();
@@ -159,6 +168,12 @@ jPCEPGrammar = {};
 	pcep.objects["LOADBALANCING"].type="object",
 	pcep.objects["LOADBALANCING"].name="LOAD-BALANCING",
 	pcep.objects["LOADBALANCING"].rfc="RFC5440"
+
+	//LOADBALANCING Object
+	pcep.objects["SVEC"] = new pcep.pcep_element();
+	pcep.objects["SVEC"].type="object",
+	pcep.objects["SVEC"].name="SVEC",
+	pcep.objects["SVEC"].rfc="RFC5440"
 
 
 	//Constructs
@@ -190,26 +205,52 @@ jPCEPGrammar = {};
 	
 
 	//Lists
+
+	//request-list
 	pcep.lists["request-list"] = new pcep.pcep_element();
 	pcep.lists["request-list"].type = "list";
 	pcep.lists["request-list"].name = "request-list";
 	pcep.lists["request-list"].pcep_elem = pcep.constructs["request"];
 	pcep.lists["request-list"].rfc="RFC5440";
 
+	//request-list
+	pcep.lists["svec-list"] = new pcep.pcep_element();
+	pcep.lists["svec-list"].type = "list";
+	pcep.lists["svec-list"].name = "svec-list";
+	pcep.lists["svec-list"].pcep_elem = pcep.objects["SVEC"];
+	pcep.lists["svec-list"].rfc="RFC5440";
+
+
 	//Messages
-                
-   PCReqMessage = new pcep.pcep_element();
-   PCReqMessage.name = "PCReqMessage"
-   PCReqMessage.elems =[];
-   PCReqMessage.elems[1] = {
+    
+   //PCEP Request Message
+	pcep.messages["PCReqMessage"] = new pcep.pcep_element();
+	pcep.messages["PCReqMessage"].name = "PCReqMessage"
+	pcep.messages["PCReqMessage"].elems =[];
+	pcep.messages["PCReqMessage"].elems[1] = {
+		pcep_elem : pcep_common_header,
+		optional : false
+	};
+	pcep.messages["PCReqMessage"].elems[2] = {
+		pcep_elem : pcep.lists["svec-list"],
+		optional : true
+	};
+	pcep.messages["PCReqMessage"].elems[3] = {
 		pcep_elem : pcep.lists["request-list"],
 		optional : false
 	};
-
-   pcep.messages["PCReqMessage"] =	PCReqMessage;
-
      
-   
+	pcep.messages["PCRepMessage"] = new pcep.pcep_element();
+	pcep.messages["PCRepMessage"].name = "PCReqMessage"
+	pcep.messages["PCRepMessage"].elems =[];
+	pcep.messages["PCRepMessage"].elems[1] = {
+		pcep_elem : pcep_common_header,
+		optional : false
+	};
+	pcep.messages["PCRepMessage"].elems[2] = {
+		pcep_elem : pcep.lists["request-list"],
+		optional : false
+	};
 
 }
 
