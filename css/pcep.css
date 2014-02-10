@@ -47,3 +47,7 @@ float: left;
 span {
 	display: block;
 }
+
+span.object_RFC5521{
+	color: #FF3300;
+}
