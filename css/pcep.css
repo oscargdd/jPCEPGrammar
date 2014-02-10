@@ -24,7 +24,7 @@ float: left;
 #pcep_grammar {
 	 background: #fff;
 border: 6px solid #ccc;
-height: 200px;
+min-height:200px;
 margin: 20px;
 padding: 20px;
 width: 350px;
@@ -42,4 +42,8 @@ float: left;
 }
 .definition {
   float: left;
+}
+
+span {
+	display: block;
 }
