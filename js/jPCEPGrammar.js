@@ -74,7 +74,11 @@ jPCEPGrammar = {};
 				console.log("entramos en lista de "+this.name);
 				newElem = $('<span />');
 				newElem.addClass("list."+this.rfc);				
-				newElem.append('&#60;'+ this.name+'&#62;');
+				if (optional == true){
+					newElem.append('[&#60;'+ this.name+'&#62;]');
+				}else {
+					newElem.append('&#60;'+ this.name+'&#62;');
+				}
 				//FIXME: CHECK IF LIST HAS ALREADY BEEN DRAWN
 				var elem_definition= $('<div />');
 				$('#grammar_content').append(elem_definition);
