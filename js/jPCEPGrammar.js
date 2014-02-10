@@ -198,6 +198,19 @@ jPCEPGrammar = {};
 	pcep.objects["NO-PATH"].name="NO-PATH";
 	pcep.objects["NO-PATH"].rfc="RFC5440";
 
+	//NOTIFICATION Object
+	pcep.objects["NOTIFICATION"] = new pcep.pcep_element();
+	pcep.objects["NOTIFICATION"].type="object";
+	pcep.objects["NOTIFICATION"].name="NOTIFICATION";
+	pcep.objects["NOTIFICATION"].rfc="RFC5440";
+
+	//NOTIFICATION-list
+	pcep.lists["notification-list"] = new pcep.pcep_element();
+	pcep.lists["notification-list"].type = "list";
+	pcep.lists["notification-list"].name = "notification-list";
+	pcep.lists["notification-list"].pcep_elem = pcep.objects["NOTIFICATION"];
+	pcep.lists["notification-list"].rfc="RFC5440";
+
 	//OPEN Object
 	pcep.objects["OPEN"] = new pcep.pcep_element();
 	pcep.objects["OPEN"].type="object";
@@ -209,6 +222,13 @@ jPCEPGrammar = {};
 	pcep.objects["RP"].type="object";
 	pcep.objects["RP"].name="RP";
 	pcep.objects["RP"].rfc="RFC5440";
+
+	//request-id-list
+	pcep.lists["request-id-list"] = new pcep.pcep_element();
+	pcep.lists["request-id-list"].type = "list";
+	pcep.lists["request-id-list"].name = "request-id-list";
+	pcep.lists["request-id-list"].pcep_elem = pcep.objects["RP"];
+	pcep.lists["request-id-list"].rfc="RFC5440";
 
 	//RRO Object
 	pcep.objects["RRO"] = new pcep.pcep_element();
@@ -385,6 +405,30 @@ jPCEPGrammar = {};
 	pcep.lists["response-list"].pcep_elem = pcep.constructs["response"];
 	pcep.lists["response-list"].rfc="RFC5440";
 
+//	Construct response
+	pcep.constructs["notify"] = new pcep.pcep_element();
+	pcep.constructs["notify"].type = "construct";
+	pcep.constructs["notify"].name = "notify";
+	pcep.constructs["notify"].elems =[];
+	pcep.constructs["notify"].elems[1] = {
+		pcep_elem : pcep.lists["request-id-list"],
+		optional : true
+	};
+	pcep.constructs["notify"].elems[2] = {
+		pcep_elem : pcep.lists["notification-list"],
+		optional : false
+	};
+	pcep.constructs["notify"].rfc="RFC5440";
+
+	//Lists
+
+	//notify-list
+	pcep.lists["notify-list"] = new pcep.pcep_element();
+	pcep.lists["notify-list"].type = "list";
+	pcep.lists["notify-list"].name = "notify-list";
+	pcep.lists["notify-list"].pcep_elem = pcep.constructs["notify"];
+	pcep.lists["notify-list"].rfc="RFC5440";
+
 	//svec-list
 	pcep.lists["svec-list"] = new pcep.pcep_element();
 	pcep.lists["svec-list"].type = "list";
@@ -449,6 +493,20 @@ jPCEPGrammar = {};
 		optional : false
 	};
 	pcep.messages["PCRep Message"].rfc="RFC5440";
+
+	 //PCEP Request Message
+	pcep.messages["PCNtf Message"] = new pcep.pcep_element();
+	pcep.messages["PCNtf Message"].name = "PCNtf Message"
+	pcep.messages["PCNtf Message"].elems =[];
+	pcep.messages["PCNtf Message"].elems[1] = {
+		pcep_elem : pcep_common_header,
+		optional : false
+	};
+	pcep.messages["PCNtf Message"].elems[2] = {
+		pcep_elem : pcep.lists["notify-list"],
+		optional : false
+	};
+	 
 
 }
 
