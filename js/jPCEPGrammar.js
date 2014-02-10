@@ -36,7 +36,7 @@ jPCEPGrammar = {};
 			var newElem;
 			if (this.type == "object"){
 				newElem = $('<span />');
-				newElem.addClass("object."+this.rfc);
+				newElem.addClass("object_"+this.rfc);
 				if (optional == true){
 					newElem.append('[&#60;'+ this.name+'&#62;]');
 				}else {
@@ -44,11 +44,10 @@ jPCEPGrammar = {};
 				}
 			} else if (this.type == "header") {
 				newElem = $('<span />');
-				newElem.addClass("object."+this.rfc);
 				newElem.append('&#60;'+ this.name+'&#62;');
 			} else if (this.type == "construct"){
 				newElem = $('<span />');
-				newElem.addClass("construct."+this.rfc);				
+				newElem.addClass("construct_"+this.rfc);				
 				if (optional == true){
 					newElem.append('[&#60;'+ this.name+'&#62;]');
 				}else {
@@ -202,6 +201,18 @@ jPCEPGrammar = {};
 	pcep.objects["SVEC"].name="SVEC";
 	pcep.objects["SVEC"].rfc="RFC5440";
 
+	//XRO Object
+	pcep.objects["XRO"] = new pcep.pcep_element();
+	pcep.objects["XRO"].type="object";
+	pcep.objects["XRO"].name="XRO";
+	pcep.objects["XRO"].rfc="RFC5521";
+
+	//OPEN Object
+	pcep.objects["OPEN"] = new pcep.pcep_element();
+	pcep.objects["OPEN"].type="object";
+	pcep.objects["OPEN"].name="OPEN";
+	pcep.objects["OPEN"].rfc="RFC5440";
+
 	//Constructs
 	//rro-bw-pair
 	pcep.constructs["rro-bw-pair"] = new pcep.pcep_element();
@@ -256,7 +267,15 @@ jPCEPGrammar = {};
 		pcep_elem :  pcep.objects["LOAD-BALANCING"],
 		optional : true
 	};
+	pcep.constructs["request"].elems[9] = {
+		pcep_elem :  pcep.objects["XRO"],
+		optional : true,
+		note: "no ordering in RFC5521 is provided"
+	};
+
+
 	pcep.constructs["request"].rfc = "RFC5440";
+
 	
 
 	//Lists
@@ -278,7 +297,22 @@ jPCEPGrammar = {};
 
 
 	//Messages
-    
+
+	//PCEP Open Message
+	pcep.messages["Open Message"] = new pcep.pcep_element();
+	pcep.messages["Open Message"].name = "Open Message"
+	pcep.messages["Open Message"].elems =[];
+    pcep.messages["Open Message"].elems[1] = {
+		pcep_elem : pcep_common_header,
+		optional : false
+	};
+	pcep.messages["Open Message"].elems[2] = {
+		pcep_elem : pcep.objects["OPEN"],
+		optional : true
+	};
+	pcep.messages["Open Message"].rfc="RFC5440";
+
+
    //PCEP Request Message
 	pcep.messages["PCReqMessage"] = new pcep.pcep_element();
 	pcep.messages["PCReqMessage"].name = "PCReqMessage"
