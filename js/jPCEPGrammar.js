@@ -32,12 +32,16 @@ jPCEPGrammar = {};
 
 	pcep.pcep_element = function(){
 
-		this.getHTML = function () {
+		this.getHTML = function (optional) {
 			var newElem;
 			if (this.type == "object"){
 				newElem = $('<span />');
 				newElem.addClass("object."+this.rfc);
-				newElem.append('&#60;'+ this.name+'&#62;');
+				if (optional == true){
+					newElem.append('[&#60;'+ this.name+'&#62;]');
+				}else {
+					newElem.append('&#60;'+ this.name+'&#62;');
+				}
 			} else if (this.type == "header") {
 				newElem = $('<span />');
 				newElem.addClass("object."+this.rfc);
@@ -61,11 +65,13 @@ jPCEPGrammar = {};
 				elem_definition.append(definition);
 				//FIXME: HAY QUE PASAR EL PARRAFO PADRE
 				for (elem in pcep.constructs[this.name].elems) {
+					console.log("vamos por "+elem);
 					console.log(pcep.constructs[this.name].elems[elem].pcep_elem.name);
-					definition.append(this.elems[elem].pcep_elem.getHTML());
+					definition.append(this.elems[elem].pcep_elem.getHTML(pcep.constructs[this.name].elems[elem].optional));
 				}
 				$('#grammar_content').append(elem_definition);
 			} else if (this.type == "list"){
+				console.log("entramos en lista de "+this.name);
 				newElem = $('<span />');
 				newElem.addClass("list."+this.rfc);				
 				newElem.append('&#60;'+ this.name+'&#62;');
@@ -81,7 +87,7 @@ jPCEPGrammar = {};
 				var definition = $('<div />');
 				definition.addClass("definition");
 				definition.append(definition);
-				definition.append(this.pcep_elem.getHTML());
+				definition.append(this.pcep_elem.getHTML(false));
 				var definition_text = '[&#60;'+ this.name+'&#62]';
 				definition.append(definition_text);
 				elem_definition.append(definition);
@@ -151,6 +157,19 @@ jPCEPGrammar = {};
 	pcep.objects["BANDWIDTH"].name="BANDWIDTH",
 	pcep.objects["BANDWIDTH"].rfc="RFC5440"
 	
+	//METRIC Object
+	pcep.objects["METRIC"] = new pcep.pcep_element();
+	pcep.objects["METRIC"].type="object",
+	pcep.objects["METRIC"].name="METRIC",
+	pcep.objects["METRIC"].rfc="RFC5440"
+
+	//metric-list
+	pcep.lists["metric-list"] = new pcep.pcep_element();
+	pcep.lists["metric-list"].type = "list";
+	pcep.lists["metric-list"].name = "metric-list";
+	pcep.lists["metric-list"].pcep_elem = pcep.objects["METRIC"];
+	pcep.lists["metric-list"].rfc="RFC5440";
+
 	//RRO Object
 	pcep.objects["RRO"] = new pcep.pcep_element();
 	pcep.objects["RRO"].type="object",
@@ -164,10 +183,10 @@ jPCEPGrammar = {};
 	pcep.objects["IRO"].rfc="RFC5440"
 
 	//LOADBALANCING Object
-	pcep.objects["LOADBALANCING"] = new pcep.pcep_element();
-	pcep.objects["LOADBALANCING"].type="object",
-	pcep.objects["LOADBALANCING"].name="LOAD-BALANCING",
-	pcep.objects["LOADBALANCING"].rfc="RFC5440"
+	pcep.objects["LOAD-BALANCING"] = new pcep.pcep_element();
+	pcep.objects["LOAD-BALANCING"].type="object",
+	pcep.objects["LOAD-BALANCING"].name="LOAD-BALANCING",
+	pcep.objects["LOAD-BALANCING"].rfc="RFC5440"
 
 	//LOADBALANCING Object
 	pcep.objects["SVEC"] = new pcep.pcep_element();
@@ -175,6 +194,7 @@ jPCEPGrammar = {};
 	pcep.objects["SVEC"].name="SVEC",
 	pcep.objects["SVEC"].rfc="RFC5440"
 
+	
 
 	//Constructs
 	pcep.constructs["request"] = new pcep.pcep_element();
@@ -198,7 +218,15 @@ jPCEPGrammar = {};
 		optional : true
 	};
 	pcep.constructs["request"].elems[5] = {
+		pcep_elem :  pcep.lists["metric-list"],
+		optional : true
+	};
+	pcep.constructs["request"].elems[6] = {
 		pcep_elem :  pcep.objects["IRO"],
+		optional : true
+	};
+	pcep.constructs["request"].elems[7] = {
+		pcep_elem :  pcep.objects["LOAD-BALANCING"],
 		optional : true
 	};
 	pcep.constructs["request"].rfc = "RFC5440";
@@ -219,6 +247,7 @@ jPCEPGrammar = {};
 	pcep.lists["svec-list"].name = "svec-list";
 	pcep.lists["svec-list"].pcep_elem = pcep.objects["SVEC"];
 	pcep.lists["svec-list"].rfc="RFC5440";
+
 
 
 	//Messages
