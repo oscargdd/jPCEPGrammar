@@ -49,7 +49,11 @@ jPCEPGrammar = {};
 			} else if (this.type == "construct"){
 				newElem = $('<span />');
 				newElem.addClass("construct."+this.rfc);				
-				newElem.append('&#60;'+ this.name+'&#62;');
+				if (optional == true){
+					newElem.append('[&#60;'+ this.name+'&#62;]');
+				}else {
+					newElem.append('&#60;'+ this.name+'&#62;');
+				}
 				//FIXME: CHECK IF CONSTRhUCT HAS ALREADY BEEN DRAWN
 				//A new element defintion is created to define the construct
 				var elem_definition= $('<div />');
@@ -176,29 +180,44 @@ jPCEPGrammar = {};
 
 	//RRO Object
 	pcep.objects["RRO"] = new pcep.pcep_element();
-	pcep.objects["RRO"].type="object",
-	pcep.objects["RRO"].name="RRO",
-	pcep.objects["RRO"].rfc="RFC5440"
+	pcep.objects["RRO"].type="object";
+	pcep.objects["RRO"].name="RRO";
+	pcep.objects["RRO"].rfc="RFC5440";
 
 	//IRO Object
 	pcep.objects["IRO"] = new pcep.pcep_element();
-	pcep.objects["IRO"].type="object",
-	pcep.objects["IRO"].name="IRO",
-	pcep.objects["IRO"].rfc="RFC5440"
+	pcep.objects["IRO"].type="object";
+	pcep.objects["IRO"].name="IRO";
+	pcep.objects["IRO"].rfc="RFC5440";
 
 	//LOADBALANCING Object
 	pcep.objects["LOAD-BALANCING"] = new pcep.pcep_element();
-	pcep.objects["LOAD-BALANCING"].type="object",
-	pcep.objects["LOAD-BALANCING"].name="LOAD-BALANCING",
-	pcep.objects["LOAD-BALANCING"].rfc="RFC5440"
+	pcep.objects["LOAD-BALANCING"].type="object";
+	pcep.objects["LOAD-BALANCING"].name="LOAD-BALANCING";
+	pcep.objects["LOAD-BALANCING"].rfc="RFC5440";
 
 	//LOADBALANCING Object
 	pcep.objects["SVEC"] = new pcep.pcep_element();
-	pcep.objects["SVEC"].type="object",
-	pcep.objects["SVEC"].name="SVEC",
-	pcep.objects["SVEC"].rfc="RFC5440"
+	pcep.objects["SVEC"].type="object";
+	pcep.objects["SVEC"].name="SVEC";
+	pcep.objects["SVEC"].rfc="RFC5440";
 
-	
+	//Constructs
+	//rro-bw-pair
+	pcep.constructs["rro-bw-pair"] = new pcep.pcep_element();
+	pcep.constructs["rro-bw-pair"].type = "construct";
+	pcep.constructs["rro-bw-pair"].name = "rro-bw-pair";
+	pcep.constructs["rro-bw-pair"].elems =[];
+	pcep.constructs["rro-bw-pair"].elems[1] = {
+		pcep_elem : pcep.objects["RRO"],
+		optional : false
+	};
+	pcep.constructs["rro-bw-pair"].elems[2] = {
+		pcep_elem :  pcep.objects["BANDWIDTH"],
+		optional : true
+	};
+	pcep.constructs["rro-bw-pair"].rfc = "RFC5440";
+	pcep.constructs["rro-bw-pair"].note = "In RFC 5440, rro-bw-pair was defined inside the request, not as a construct";
 
 	//Constructs
 	pcep.constructs["request"] = new pcep.pcep_element();
@@ -226,10 +245,14 @@ jPCEPGrammar = {};
 		optional : true
 	};
 	pcep.constructs["request"].elems[6] = {
-		pcep_elem :  pcep.objects["IRO"],
+		pcep_elem :  pcep.constructs["rro-bw-pair"],
 		optional : true
 	};
 	pcep.constructs["request"].elems[7] = {
+		pcep_elem :  pcep.objects["IRO"],
+		optional : true
+	};
+	pcep.constructs["request"].elems[8] = {
 		pcep_elem :  pcep.objects["LOAD-BALANCING"],
 		optional : true
 	};
