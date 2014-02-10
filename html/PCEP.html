@@ -18,14 +18,15 @@
          <h1> PCEP input</h1>
         Select PCEP Message
       <select name="message_name">
+        <option value="Open Message">Open Message</option>
+        <option value="Keepalive Message">Keepalive Message</option>
         <option value="PCReqMessage">PCReq Message</option>
-        <option value="PCRepMessage">PCRep Message</option>
-       
+        <option value="PCNtf Message">Notification (PCNtf) Message</option>
       </select>
       <p>
-      <input type="checkbox" name="option1" value="Milk" checked> RFC 5440<br>
-      <input type="checkbox" name="option2" value="Butter" checked> RFC 5520<br>
-      <input type="checkbox" name="option3" value="Cheese"> RFC 5521<br>
+      <input type="checkbox" name="rfcs[]" value="RFC5440" checked> RFC 5440<br>
+      <input type="checkbox" name="rfcs[]" value="RFC5520" checked> RFC 5520<br>
+      <input type="checkbox" name="rfcs[]" value="RFC5521"> RFC 5521<br>
       </p>
       </form>
       <button type="button" form= "pcep_message" onclick="jPCEPGrammar.draw_message(message_name.value)">Show grammar</button>
