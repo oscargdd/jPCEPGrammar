@@ -15,6 +15,9 @@ Oscar Gonzalez de Dios
 jPCEPGrammar = {};
 
 (function (pcep,$,undefined) {
+
+	// Version
+	pcep.version = "0.3-dev"
 	
 	// List of PCEP Messages
 	pcep.messages = [];
@@ -32,94 +35,101 @@ jPCEPGrammar = {};
 
 	pcep.pcep_element = function(){
 
-		this.getHTML = function (optional) {
+		this.getHTML = function (RFCfilter, optional) {
 			var newElem;
-			if (this.type == "object"){
-				console.log("esto es "+this.name);
-				newElem = $('<span />');
-				newElem.addClass("object_"+this.rfc);
-				if (optional == true){
-					newElem.append('[&#60;'+ this.name+'&#62;]');
-				}else {
+			//Check if the element's RFC is in the filter, otherwise, don't show it
+			var found = $.inArray(this.rfc, RFCfilter) > -1;
+			if (found) {
+				if (this.type == "object"){
+					//Check if the object is in the filter, otherwise, don't show it
+					
+						newElem = $('<span />');
+						newElem.addClass("object_"+this.rfc);
+						if (optional == true){
+							newElem.append('[&#60;'+ this.name+'&#62;]');
+						}else {
+							newElem.append('&#60;'+ this.name+'&#62;');
+						}
+					
+					
+				} else if (this.type == "header") {
+					newElem = $('<span />');
 					newElem.append('&#60;'+ this.name+'&#62;');
-				}
-			} else if (this.type == "header") {
-				newElem = $('<span />');
-				newElem.append('&#60;'+ this.name+'&#62;');
-			} else if (this.type == "construct"){
-				console.log("entramos en construct "+this.name);
-				newElem = $('<span />');
-				newElem.addClass("construct_"+this.rfc);				
-				if (optional == true){
-					newElem.append('[&#60;'+ this.name+'&#62;]');
+				} else if (this.type == "construct"){
+					console.log("entramos en construct "+this.name);
+					newElem = $('<span />');
+					newElem.addClass("construct_"+this.rfc);				
+					if (optional == true){
+						newElem.append('[&#60;'+ this.name+'&#62;]');
+					}else {
+						newElem.append('&#60;'+ this.name+'&#62;');
+					}
+					//FIXME: CHECK IF CONSTRhUCT HAS ALREADY BEEN DRAWN
+					//A new element defintion is created to define the construct
+					var elem_definition= $('<div />');
+					elem_definition.addClass("elem_definition");
+					var defined_element = $('<div />');
+					defined_element.addClass("defined_element");
+					var displayText = '&#60;'+ this.name+'&#62;'+"::==";
+					defined_element.append(displayText);
+					elem_definition.append(defined_element);
+					var definition = $('<div />');
+					definition.addClass("definition");
+					definition.append(definition);
+					elem_definition.append(definition);
+					//FIXME: HAY QUE PASAR EL PARRAFO PADRE
+					console.log(this.name+ " tiene "+pcep.constructs[this.name].elems.length);
+					for (elem in pcep.constructs[this.name].elems) {
+						console.log("vaaamos por "+elem+" de "+this.name);
+						console.log("sale"+pcep.constructs[this.name].elems[elem].pcep_elem.name);
+						definition.append(this.elems[elem].pcep_elem.getHTML(RFCfilter, pcep.constructs[this.name].elems[elem].optional));
+					}
+					$('#grammar_content').append(elem_definition);
+				} else if (this.type == "list"){
+					console.log("entramos en lista de "+this.name);
+					newElem = $('<span />');
+					newElem.addClass("list."+this.rfc);				
+					if (optional == true){
+						newElem.append('[&#60;'+ this.name+'&#62;]');
+					}else {
+						newElem.append('&#60;'+ this.name+'&#62;');
+					}
+					//FIXME: CHECK IF LIST HAS ALREADY BEEN DRAWN
+					var elem_definition= $('<div />');
+					$('#grammar_content').append(elem_definition);
+					elem_definition.addClass("elem_definition");
+					var defined_element = $('<div />');
+					defined_element.addClass("defined_element");
+					var displayText = '&#60;'+ this.name+'&#62;'+"::==";
+					defined_element.append(displayText);
+					elem_definition.append(defined_element);
+					var definition = $('<div />');
+					definition.addClass("definition");
+					definition.append(definition);
+					definition.append(this.pcep_elem.getHTML(RFCfilter,false));
+					var definition_text = '[&#60;'+ this.name+'&#62]';
+					definition.append(definition_text);
+					elem_definition.append(definition);
+					
 				}else {
-					newElem.append('&#60;'+ this.name+'&#62;');
+					newElem = $('<div />');
+					newElem.addClass("elem_definition");
+					//Create a div for the defined element
+					var defined_element = $('<div />');
+					defined_element.addClass("defined_element");
+					var displayText = this.name+":==";
+					defined_element.append(displayText);
+					newElem.append(defined_element);
+					//Create another div for the defnition itself
+					var definition = $('<div />');
+					definition.addClass("definition");
+					newElem.append(definition);
+					for (elem in this.elems) {
+						console.log(this.elems[elem].pcep_elem.name);
+						definition.append(this.elems[elem].pcep_elem.getHTML(RFCfilter));
+					}
+					
 				}
-				//FIXME: CHECK IF CONSTRhUCT HAS ALREADY BEEN DRAWN
-				//A new element defintion is created to define the construct
-				var elem_definition= $('<div />');
-				elem_definition.addClass("elem_definition");
-				var defined_element = $('<div />');
-				defined_element.addClass("defined_element");
-				var displayText = '&#60;'+ this.name+'&#62;'+"::==";
-				defined_element.append(displayText);
-				elem_definition.append(defined_element);
-				var definition = $('<div />');
-				definition.addClass("definition");
-				definition.append(definition);
-				elem_definition.append(definition);
-				//FIXME: HAY QUE PASAR EL PARRAFO PADRE
-				console.log(this.name+ " tiene "+pcep.constructs[this.name].elems.length);
-				for (elem in pcep.constructs[this.name].elems) {
-					console.log("vaaamos por "+elem+" de "+this.name);
-					console.log("sale"+pcep.constructs[this.name].elems[elem].pcep_elem.name);
-					definition.append(this.elems[elem].pcep_elem.getHTML(pcep.constructs[this.name].elems[elem].optional));
-				}
-				$('#grammar_content').append(elem_definition);
-			} else if (this.type == "list"){
-				console.log("entramos en lista de "+this.name);
-				newElem = $('<span />');
-				newElem.addClass("list."+this.rfc);				
-				if (optional == true){
-					newElem.append('[&#60;'+ this.name+'&#62;]');
-				}else {
-					newElem.append('&#60;'+ this.name+'&#62;');
-				}
-				//FIXME: CHECK IF LIST HAS ALREADY BEEN DRAWN
-				var elem_definition= $('<div />');
-				$('#grammar_content').append(elem_definition);
-				elem_definition.addClass("elem_definition");
-				var defined_element = $('<div />');
-				defined_element.addClass("defined_element");
-				var displayText = '&#60;'+ this.name+'&#62;'+"::==";
-				defined_element.append(displayText);
-				elem_definition.append(defined_element);
-				var definition = $('<div />');
-				definition.addClass("definition");
-				definition.append(definition);
-				definition.append(this.pcep_elem.getHTML(false));
-				var definition_text = '[&#60;'+ this.name+'&#62]';
-				definition.append(definition_text);
-				elem_definition.append(definition);
-				
-			}else {
-				newElem = $('<div />');
-				newElem.addClass("elem_definition");
-				//Create a div for the defined element
-				var defined_element = $('<div />');
-				defined_element.addClass("defined_element");
-				var displayText = this.name+":==";
-				defined_element.append(displayText);
-				newElem.append(defined_element);
-				//Create another div for the defnition itself
-				var definition = $('<div />');
-				definition.addClass("definition");
-				newElem.append(definition);
-				for (elem in this.elems) {
-					console.log(this.elems[elem].pcep_elem.name);
-					definition.append(this.elems[elem].pcep_elem.getHTML());
-				}
-				
 			}
 			return newElem;
 		}
@@ -128,11 +138,17 @@ jPCEPGrammar = {};
 	}
 
 	pcep.draw_message = function (message_name ) {
-		console.log(message_name);
+		console.log("Draw message: "+message_name);
 		var newElem = $('<div />');
 		newElem.attr('id', 'grammar_content');
 		$('#pcep_grammar').html(newElem);
-		newElem.prepend(pcep.messages[message_name].getHTML());
+		//Filter of current view 
+	    //Let's try starting by an Array
+	    var RFCfilter = new Array();
+		$('#RFCs input:checked').each(function() {
+    		RFCfilter.push(this.value);
+		});
+		newElem.prepend(pcep.messages[message_name].getHTML(RFCfilter));
 	}
 
 	//Common Header
@@ -480,6 +496,7 @@ jPCEPGrammar = {};
 		pcep_elem : pcep.lists["request-list"],
 		optional : false
 	};
+	pcep.messages["PCReqMessage"].rfc="RFC5440";
      
 	pcep.messages["PCRep Message"] = new pcep.pcep_element();
 	pcep.messages["PCRep Message"].name = "PCRep Message"
@@ -506,7 +523,7 @@ jPCEPGrammar = {};
 		pcep_elem : pcep.lists["notify-list"],
 		optional : false
 	};
-	 
+	pcep.messages["PCNtf Message"].rfc="RFC5440"; 
 
 }
 

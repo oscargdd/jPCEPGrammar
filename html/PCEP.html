@@ -25,9 +25,11 @@
         <option value="PCNtf Message">Notification (PCNtf) Message</option>
       </select>
       <p>
+       <div id = "RFCs"> 
       <input type="checkbox" name="rfcs[]" value="RFC5440" checked> RFC 5440<br>
-      <input type="checkbox" name="rfcs[]" value="RFC5520" checked> RFC 5520<br>
+      <input type="checkbox" name="rfcs[]" value="RFC5520"> RFC 5520<br>
       <input type="checkbox" name="rfcs[]" value="RFC5521"> RFC 5521<br>
+    </div>
       </p>
       </form>
       <button type="button" form= "pcep_message" onclick="jPCEPGrammar.draw_message(message_name.value)">Show grammar</button>
