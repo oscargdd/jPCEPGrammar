@@ -1,29 +1,38 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-    <title>PCEP LIBRARY</title>
+    <title>PCEP Grammar</title>
     <link rel="stylesheet" type="text/css" href="../css/pcep.css" />
     <script src="../../jquery/jquery-2.1.0.js"></script>
      <script src="../js/jPCEPGrammar.js" type="text/javascript"></script>
-      
+     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>      
 </head>
 
 <body >
     <header>
-    <h1>Play with the grammar of <span> PCEP</span> </h1>
+    <div id="logo">
+      <img src="../img/PACE_logo_color_50mm.png"/> 
+    </div>
+    <div id="title_page">Play with the grammar of <span> PCEP</span>
+    </div>
     </header>
-
-    <div id="pcep_input">
-      <form id = "pcep_message">
-         <h1> PCEP input</h1>
-        Select PCEP Message
+     
+      <form id = "pcep">    
+        <fieldset id = "pcep_input" >
+         <legend id = "pcep_input_title">PCEP Inputs</legend>  
+        <div id ="select_message"> Select PCEP Message
+<label id="message_na">
       <select name="message_name">
+      
         <option value="Open Message">Open Message</option>
         <option value="Keepalive Message">Keepalive Message</option>
         <option value="PCReqMessage">PCReq Message</option>
         <option value="PCRep Message">PCRep Message</option>
         <option value="PCNtf Message">Notification (PCNtf) Message</option>
       </select>
+    </label>
+    </div>
       <p>
        <div id = "RFCs"> 
       <input type="checkbox" name="rfcs[]" value="RFC5440" checked> RFC 5440<br>
@@ -31,15 +40,20 @@
       <input type="checkbox" name="rfcs[]" value="RFC5521"> RFC 5521<br>
     </div>
       </p>
+        <button class="a_demo_two" type="button" form= "pcep" onclick="jPCEPGrammar.draw_message(message_name.value)">Show grammar</button>
+    </fieldset>
+
       </form>
-      <button type="button" form= "pcep_message" onclick="jPCEPGrammar.draw_message(message_name.value)">Show grammar</button>
+    
      
     
-
-      </div>
-
+    <form>    
+        <fieldset id = "pcep_grammara" >
+         <legend id = "pcep_input_title">PCEP Grammar</legend>
       <div id="pcep_grammar">
       </div>
+    </fieldset>
+  </form>
 
 </body>
 
