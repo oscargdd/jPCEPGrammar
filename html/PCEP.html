@@ -5,56 +5,48 @@
     <title>PCEP Grammar</title>
     <link rel="stylesheet" type="text/css" href="../css/pcep.css" />
     <script src="../../jquery/jquery-2.1.0.js"></script>
-     <script src="../js/jPCEPGrammar.js" type="text/javascript"></script>
-     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>      
+    <script src="../js/jPCEPGrammar.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>      
 </head>
 
 <body >
-    <header>
+
+  <header>
     <div id="logo">
       <img src="../img/PACE_logo_color_50mm.png"/> 
     </div>
-    <div id="title_page">Play with the grammar of <span> PCEP</span>
+    <div id="page_title">Play with the grammar of <span> PCEP</span>
     </div>
-    </header>
-     
-      <form id = "pcep">    
-        <fieldset id = "pcep_input" >
-         <legend id = "pcep_input_title">PCEP Inputs</legend>  
-        <div id ="select_message"> Select PCEP Message
-<label id="message_na">
-      <select name="message_name">
-      
-        <option value="Open Message">Open Message</option>
-        <option value="Keepalive Message">Keepalive Message</option>
-        <option value="PCReqMessage">PCReq Message</option>
-        <option value="PCRep Message">PCRep Message</option>
-        <option value="PCNtf Message">Notification (PCNtf) Message</option>
-      </select>
-    </label>
-    </div>
-      <p>
-       <div id = "RFCs"> 
-      <input type="checkbox" name="rfcs[]" value="RFC5440" checked> RFC 5440<br>
-      <input type="checkbox" name="rfcs[]" value="RFC5520"> RFC 5520<br>
-      <input type="checkbox" name="rfcs[]" value="RFC5521"> RFC 5521<br>
-    </div>
-      </p>
-        <button class="a_demo_two" type="button" form= "pcep" onclick="jPCEPGrammar.draw_message(message_name.value)">Show grammar</button>
-    </fieldset>
+  </header>
 
-      </form>
-    
-     
-    
-    <form>    
-        <fieldset id = "pcep_grammara" >
-         <legend id = "pcep_input_title">PCEP Grammar</legend>
-      <div id="pcep_grammar">
+  <div id = "PCEP_zone">
+    <form id = "pcep_inputs">      
+      <div id = "pcep_input_title">PCEP Inputs</div>  
+      <div id ="select_message">
+        <div id="select_message_title">Select PCEP Message</div>
+        <label id="message_na">
+          <select name="message_name">      
+            <option value="Open Message">Open Message</option>
+            <option value="Keepalive Message">Keepalive Message</option>
+            <option value="PCReqMessage">PCReq Message</option>
+            <option value="PCRep Message">PCRep Message</option>
+            <option value="PCNtf Message">Notification (PCNtf) Message</option>
+          </select>
+        </label>
       </div>
-    </fieldset>
-  </form>
-
+      <div id = "RFCs"> 
+        <input type="checkbox" name="rfcs[]" value="RFC5440" checked> RFC 5440</input>
+        <input type="checkbox" name="rfcs[]" value="RFC5520"> RFC 5520</input>
+        <input type="checkbox" name="rfcs[]" value="RFC5521"> RFC 5521</input>
+      </div>
+      <button id="mybutton" type="button" form= "pcep_inputs" onclick="jPCEPGrammar.draw_message(message_name.value)">Show grammar</button>  
+    </form>
+    
+    <div id="pcep_grammar_zone">    
+       <div id="pcep_grammar_title">PCEP Grammar</div>
+       <div id="pcep_grammar"></div>
+    </div>
+  </div>
 </body>
 
 </html>
