@@ -44,22 +44,21 @@ jPCEPGrammar = {};
 			var found = $.inArray(this.rfc, RFCfilter) > -1;
 			if (found) {
 				if (this.type == "object"){
-					//Check if the object is in the filter, otherwise, don't show it
-					
+					//Check if the object is in the filter, otherwise, don't show it					
 						newElem = $('<span />');
 						newElem.addClass("object_"+this.rfc);
 						if (optional == true){
 							newElem.append('[&#60;'+ this.name+'&#62;]');
 						}else {
 							newElem.append('&#60;'+ this.name+'&#62;');
-						}
-					
+						}					
 					
 				} else if (this.type == "header") {
+					// The element is the header of a message
 					newElem = $('<span />');
 					newElem.append('&#60;'+ this.name+'&#62;');
 				} else if (this.type == "construct"){
-					console.log("entramos en construct "+this.name);
+					// The element is a construct
 					newElem = $('<span />');
 					newElem.addClass("construct_"+this.rfc);				
 					if (optional == true){
@@ -70,6 +69,7 @@ jPCEPGrammar = {};
 					//FIXME: CHECK IF CONSTRhUCT HAS ALREADY BEEN DRAWN
 					//A new element defintion is created to define the construct
 					var elem_definition= $('<div />');
+					$('#grammar_content').append(elem_definition);
 					elem_definition.addClass("elem_definition");
 					var defined_element = $('<div />');
 					defined_element.addClass("defined_element");
@@ -87,18 +87,18 @@ jPCEPGrammar = {};
 						console.log("sale"+pcep.constructs[this.name].elems[elem].pcep_elem.name);
 						definition.append(this.elems[elem].pcep_elem.getHTML(RFCfilter, pcep.constructs[this.name].elems[elem].optional));
 					}
-					$('#grammar_content').append(elem_definition);
+					
 				} else if (this.type == "choice") {
 					console.log("entering choice "+this.name);
 					newElem = $('<span />');
-					newElem.addClass("choice"+this.rfc);				
+					newElem.addClass("choice");				
 					if (optional == true){
 						newElem.append('[');
 					}
 					for (var elem in this.elems) {
 						console.log("Choice: elem ["+elem+"]"+this.elems[elem].pcep_elem.name);
+
 						newElem.append(this.elems[elem].pcep_elem.getHTML(RFCfilter, this.elems[elem].optional));
-						console.log("elm vale "+elem+" y length es "+elem.length);
 						if (elem < this.elems.length-1){
 							newElem.append('|');	
 						}						
