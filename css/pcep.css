@@ -134,7 +134,7 @@ body{
 	border: 6px solid #ccc;
 	min-height: 200px;
 	margin: 20px;
-	width: 350px;
+	width: 450px;
 	float: left;
 }
 
@@ -162,6 +162,10 @@ body{
 
 #pcep_grammar span {
 	display: block;
+}
+
+#pcep_grammar .choice span {
+	display: inline;
 }
 
 #pcep_grammar span.object_RFC5521{
