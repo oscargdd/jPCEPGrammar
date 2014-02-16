@@ -31,6 +31,9 @@ jPCEPGrammar = {};
 	//List of PCEP Elements lists
 	pcep.lists = [];
 
+	//List of PCEP choices
+	pcep.choices = [];
+
 	//FIXME: Add list of shown constructs to avoid repeating them
 
 	pcep.pcep_element = function(){
@@ -85,6 +88,19 @@ jPCEPGrammar = {};
 						definition.append(this.elems[elem].pcep_elem.getHTML(RFCfilter, pcep.constructs[this.name].elems[elem].optional));
 					}
 					$('#grammar_content').append(elem_definition);
+				} else if (this.type == "choice") {
+					console.log("entering choice "+this.name);
+					newElem = $('<span />');
+					newElem.addClass("choice"+this.rfc);				
+					if (optional == true){
+						newElem.append('[');
+					}
+					for (elem in this.elems) {
+						console.log("entering elem "+this.elems[elem].pcep_elem.name);						
+						newElem.append(this.elems[elem].pcep_elem.getHTML(RFCfilter, this.elems[elem].optional));
+						newElem.append('|');
+						console.log("bla bla");
+					}
 				} else if (this.type == "list"){
 					console.log("entramos en lista de "+this.name);
 					newElem = $('<span />');
@@ -233,6 +249,12 @@ jPCEPGrammar = {};
 	pcep.objects["OPEN"].name="OPEN";
 	pcep.objects["OPEN"].rfc="RFC5440";
 
+	//PATH-KEY Object
+	pcep.objects["PATH-KEY"] = new pcep.pcep_element();
+	pcep.objects["PATH-KEY"].type="object";
+	pcep.objects["PATH-KEY"].name="PATH-KEY";
+	pcep.objects["PATH-KEY"].rfc="RFC5520";
+
 	//RP Object
 	pcep.objects["RP"] = new pcep.pcep_element();
 	pcep.objects["RP"].type="object";
@@ -271,11 +293,11 @@ jPCEPGrammar = {};
 	pcep.constructs["rro-bw-pair"].type = "construct";
 	pcep.constructs["rro-bw-pair"].name = "rro-bw-pair";
 	pcep.constructs["rro-bw-pair"].elems =[];
-	pcep.constructs["rro-bw-pair"].elems[1] = {
+	pcep.constructs["rro-bw-pair"].elems[0] = {
 		pcep_elem : pcep.objects["RRO"],
 		optional : false
 	};
-	pcep.constructs["rro-bw-pair"].elems[2] = {
+	pcep.constructs["rro-bw-pair"].elems[1] = {
 		pcep_elem :  pcep.objects["BANDWIDTH"],
 		optional : true
 	};
@@ -287,19 +309,19 @@ jPCEPGrammar = {};
 	pcep.constructs["attribute"].type = "construct";
 	pcep.constructs["attribute"].name = "attribute";
 	pcep.constructs["attribute"].elems =[];
-	pcep.constructs["attribute"].elems[1] = {
+	pcep.constructs["attribute"].elems[0] = {
 		pcep_elem : pcep.objects["LSPA"],
 		optional : true
 	};
-	pcep.constructs["attribute"].elems[2] = {
+	pcep.constructs["attribute"].elems[1] = {
 		pcep_elem : pcep.objects["BANDWIDTH"],
 		optional : true
 	};
-	pcep.constructs["attribute"].elems[3] = {
+	pcep.constructs["attribute"].elems[2] = {
 		pcep_elem : pcep.lists["metric-list"],
 		optional : true
 	};
-	pcep.constructs["attribute"].elems[4] = {
+	pcep.constructs["attribute"].elems[3] = {
 		pcep_elem : pcep.objects["IRO"],
 		optional : true
 	};
@@ -318,11 +340,11 @@ jPCEPGrammar = {};
 	pcep.constructs["path"].type = "construct";
 	pcep.constructs["path"].name = "path";
 	pcep.constructs["path"].elems =[];
-	pcep.constructs["path"].elems[1] = {
+	pcep.constructs["path"].elems[0] = {
 		pcep_elem : pcep.objects["ERO"],
 		optional : false
 	};
-	pcep.constructs["path"].elems[2] = {
+	pcep.constructs["path"].elems[1] = {
 		pcep_elem : pcep.lists["attribute-list"],
 		optional : true
 	};
@@ -337,48 +359,85 @@ jPCEPGrammar = {};
 	pcep.lists["path-list"].pcep_elem = pcep.constructs["path"];
 	pcep.lists["path-list"].rfc="RFC5440";
 
+	// Segment-computation
+	pcep.constructs["segment-computation"] = new pcep.pcep_element();
+	pcep.constructs["segment-computation"].type = "construct";
+	pcep.constructs["segment-computation"].name = "segment-computation";
+	pcep.constructs["segment-computation"].elems =[];
+	pcep.constructs["segment-computation"].elems[0] = {
+		pcep_elem :  pcep.objects["ENDPOINTS"],
+		optional : false
+	};
+	pcep.constructs["segment-computation"].elems[1] = {
+		pcep_elem :  pcep.objects["LSPA"],
+		optional : true
+	};
+	pcep.constructs["segment-computation"].elems[2] = {
+		pcep_elem :  pcep.objects["BANDWIDTH"],
+		optional : true
+	};
+	pcep.constructs["segment-computation"].elems[3] = {
+		pcep_elem :  pcep.lists["metric-list"],
+		optional : true
+	};
+	pcep.constructs["segment-computation"].elems[4] = {
+		pcep_elem :  pcep.constructs["rro-bw-pair"],
+		optional : true
+	};
+	pcep.constructs["segment-computation"].elems[5] = {
+		pcep_elem :  pcep.objects["IRO"],
+		optional : true
+	};
+	pcep.constructs["segment-computation"].elems[6] = {
+		pcep_elem :  pcep.objects["LOAD-BALANCING"],
+		optional : true
+	};
+	pcep.constructs["segment-computation"].elems[7] = {
+		pcep_elem :  pcep.objects["XRO"],
+		optional : true,
+		note: "no ordering in RFC5521 is provided"
+	};
+
+	pcep.constructs["segment-computation"].rfc = "RFC5440";
+	pcep.constructs["segment-computation"].note = "The construct path-key-expansion really appeard in RF5220, but it contains all the objects of the request as defined in RFC5440";
+
+	//path-key-expansion
+	pcep.constructs["path-key-expansion"] = new pcep.pcep_element();
+	pcep.constructs["path-key-expansion"].type = "construct";
+	pcep.constructs["path-key-expansion"].name = "path-key-expansion";
+	pcep.constructs["path-key-expansion"].elems =[];
+	pcep.constructs["path-key-expansion"].elems[0] = {
+		pcep_elem : pcep.objects["PATH-KEY"],
+		optional : false
+	};
+	pcep.constructs["path-key-expansion"].rfc = "RFC5520";
+
+	pcep.choices["seg-com-pke"] = new pcep.pcep_element();
+	pcep.choices["seg-com-pke"].type = "choice";
+	pcep.choices["seg-com-pke"].name = "seg-com-pke";
+	pcep.choices["seg-com-pke"].elems = [];
+	pcep.choices["seg-com-pke"].elems[0] = {
+		pcep_elem : pcep.constructs["segment-computation"],
+		optional : false
+	};
+	pcep.choices["seg-com-pke"].elems[1] = {
+		pcep_elem : pcep.constructs["path-key-expansion"],
+		optional : false
+	};
+	pcep.choices["seg-com-pke"].rfc = "RFC5440";
 
 	//	Construct request
 	pcep.constructs["request"] = new pcep.pcep_element();
 	pcep.constructs["request"].type = "construct";
 	pcep.constructs["request"].name = "request";
 	pcep.constructs["request"].elems =[];
-	pcep.constructs["request"].elems[1] = {
+	pcep.constructs["request"].elems[0] = {
 		pcep_elem : pcep.objects["RP"],
 		optional : false
 	};
-	pcep.constructs["request"].elems[2] = {
-		pcep_elem :  pcep.objects["ENDPOINTS"],
+	pcep.constructs["request"].elems[1] = {
+		pcep_elem : pcep.choices["seg-com-pke"],
 		optional : false
-	};
-	pcep.constructs["request"].elems[3] = {
-		pcep_elem :  pcep.objects["LSPA"],
-		optional : true
-	};
-	pcep.constructs["request"].elems[4] = {
-		pcep_elem :  pcep.objects["BANDWIDTH"],
-		optional : true
-	};
-	pcep.constructs["request"].elems[5] = {
-		pcep_elem :  pcep.lists["metric-list"],
-		optional : true
-	};
-	pcep.constructs["request"].elems[6] = {
-		pcep_elem :  pcep.constructs["rro-bw-pair"],
-		optional : true
-	};
-	pcep.constructs["request"].elems[7] = {
-		pcep_elem :  pcep.objects["IRO"],
-		optional : true
-	};
-	pcep.constructs["request"].elems[8] = {
-		pcep_elem :  pcep.objects["LOAD-BALANCING"],
-		optional : true
-	};
-	pcep.constructs["request"].elems[9] = {
-		pcep_elem :  pcep.objects["XRO"],
-		optional : true,
-		note: "no ordering in RFC5521 is provided"
 	};
 	pcep.constructs["request"].rfc = "RFC5440";
 
@@ -394,19 +453,19 @@ jPCEPGrammar = {};
 	pcep.constructs["response"].type = "construct";
 	pcep.constructs["response"].name = "response";
 	pcep.constructs["response"].elems =[];
-	pcep.constructs["response"].elems[1] = {
+	pcep.constructs["response"].elems[0] = {
 		pcep_elem : pcep.objects["RP"],
 		optional : false
 	};
-	pcep.constructs["response"].elems[2] = {
+	pcep.constructs["response"].elems[1] = {
 		pcep_elem : pcep.objects["NO-PATH"],
 		optional : true
 	};
-	pcep.constructs["response"].elems[3] = {
+	pcep.constructs["response"].elems[2] = {
 		pcep_elem : pcep.lists["attribute-list"],
 		optional : true
 	};
-	pcep.constructs["response"].elems[4] = {
+	pcep.constructs["response"].elems[3] = {
 		pcep_elem : pcep.lists["path-list"],
 		optional : true
 	};
@@ -426,11 +485,11 @@ jPCEPGrammar = {};
 	pcep.constructs["notify"].type = "construct";
 	pcep.constructs["notify"].name = "notify";
 	pcep.constructs["notify"].elems =[];
-	pcep.constructs["notify"].elems[1] = {
+	pcep.constructs["notify"].elems[0] = {
 		pcep_elem : pcep.lists["request-id-list"],
 		optional : true
 	};
-	pcep.constructs["notify"].elems[2] = {
+	pcep.constructs["notify"].elems[1] = {
 		pcep_elem : pcep.lists["notification-list"],
 		optional : false
 	};
@@ -460,11 +519,11 @@ jPCEPGrammar = {};
 	pcep.messages["Open Message"] = new pcep.pcep_element();
 	pcep.messages["Open Message"].name = "Open Message"
 	pcep.messages["Open Message"].elems =[];
-    pcep.messages["Open Message"].elems[1] = {
+    pcep.messages["Open Message"].elems[0] = {
 		pcep_elem : pcep_common_header,
 		optional : false
 	};
-	pcep.messages["Open Message"].elems[2] = {
+	pcep.messages["Open Message"].elems[1] = {
 		pcep_elem : pcep.objects["OPEN"],
 		optional : true
 	};
@@ -474,7 +533,7 @@ jPCEPGrammar = {};
 	pcep.messages["Keepalive Message"] = new pcep.pcep_element();
 	pcep.messages["Keepalive Message"].name = "Keepalive Message"
 	pcep.messages["Keepalive Message"].elems =[];
-	pcep.messages["Keepalive Message"].elems[1] = {
+	pcep.messages["Keepalive Message"].elems[0] = {
 		pcep_elem : pcep_common_header,
 		optional : false
 	};
@@ -484,15 +543,15 @@ jPCEPGrammar = {};
 	pcep.messages["PCReqMessage"] = new pcep.pcep_element();
 	pcep.messages["PCReqMessage"].name = "PCReqMessage"
 	pcep.messages["PCReqMessage"].elems =[];
-	pcep.messages["PCReqMessage"].elems[1] = {
+	pcep.messages["PCReqMessage"].elems[0] = {
 		pcep_elem : pcep_common_header,
 		optional : false
 	};
-	pcep.messages["PCReqMessage"].elems[2] = {
+	pcep.messages["PCReqMessage"].elems[1] = {
 		pcep_elem : pcep.lists["svec-list"],
 		optional : true
 	};
-	pcep.messages["PCReqMessage"].elems[3] = {
+	pcep.messages["PCReqMessage"].elems[2] = {
 		pcep_elem : pcep.lists["request-list"],
 		optional : false
 	};
@@ -501,11 +560,11 @@ jPCEPGrammar = {};
 	pcep.messages["PCRep Message"] = new pcep.pcep_element();
 	pcep.messages["PCRep Message"].name = "PCRep Message"
 	pcep.messages["PCRep Message"].elems =[];
-	pcep.messages["PCRep Message"].elems[1] = {
+	pcep.messages["PCRep Message"].elems[0] = {
 		pcep_elem : pcep_common_header,
 		optional : false
 	};
-	pcep.messages["PCRep Message"].elems[2] = {
+	pcep.messages["PCRep Message"].elems[1] = {
 		pcep_elem : pcep.lists["response-list"],
 		optional : false
 	};
@@ -515,11 +574,11 @@ jPCEPGrammar = {};
 	pcep.messages["PCNtf Message"] = new pcep.pcep_element();
 	pcep.messages["PCNtf Message"].name = "PCNtf Message"
 	pcep.messages["PCNtf Message"].elems =[];
-	pcep.messages["PCNtf Message"].elems[1] = {
+	pcep.messages["PCNtf Message"].elems[0] = {
 		pcep_elem : pcep_common_header,
 		optional : false
 	};
-	pcep.messages["PCNtf Message"].elems[2] = {
+	pcep.messages["PCNtf Message"].elems[1] = {
 		pcep_elem : pcep.lists["notify-list"],
 		optional : false
 	};
