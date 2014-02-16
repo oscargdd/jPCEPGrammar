@@ -110,6 +110,10 @@ body{
 	margin-bottom: 10px;
 }
 
+#RFCs input {
+	margin-left: 15px;
+}
+
 #mybutton{
 	margin-left: 70px;
 	margin-top: 10px;
