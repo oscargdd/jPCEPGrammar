@@ -80,31 +80,24 @@ jPCEPGrammar = {};
 					definition.addClass("definition");
 					definition.append(definition);
 					elem_definition.append(definition);
-					//FIXME: HAY QUE PASAR EL PARRAFO PADRE
 					console.log(this.name+ " tiene "+pcep.constructs[this.name].elems.length);
 					for (var elem in pcep.constructs[this.name].elems) {
-						console.log("vaaamos por "+elem+" de "+this.name);
-						console.log("sale"+pcep.constructs[this.name].elems[elem].pcep_elem.name);
 						definition.append(this.elems[elem].pcep_elem.getHTML(RFCfilter, pcep.constructs[this.name].elems[elem].optional));
 					}
 					
 				} else if (this.type == "choice") {
-					console.log("entering choice "+this.name);
 					newElem = $('<span />');
 					newElem.addClass("choice");				
 					if (optional == true){
 						newElem.append('[');
 					}
 					for (var elem in this.elems) {
-						console.log("Choice: elem ["+elem+"]"+this.elems[elem].pcep_elem.name);
-
 						newElem.append(this.elems[elem].pcep_elem.getHTML(RFCfilter, this.elems[elem].optional));
 						if (elem < this.elems.length-1){
 							newElem.append('|');	
 						}						
 					}
 				} else if (this.type == "list"){
-					console.log("entramos en lista de "+this.name);
 					newElem = $('<span />');
 					newElem.addClass("list."+this.rfc);				
 					if (optional == true){
@@ -128,7 +121,7 @@ jPCEPGrammar = {};
 					var definition_text = '[&#60;'+ this.name+'&#62]';
 					definition.append(definition_text);
 					elem_definition.append(definition);
-					
+		
 				}else {
 					newElem = $('<div />');
 					newElem.addClass("elem_definition");
@@ -143,7 +136,6 @@ jPCEPGrammar = {};
 					definition.addClass("definition");
 					newElem.append(definition);
 					for (var elem in this.elems) {
-						console.log(this.elems[elem].pcep_elem.name);
 						definition.append(this.elems[elem].pcep_elem.getHTML(RFCfilter));
 					}
 					
