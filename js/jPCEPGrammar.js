@@ -176,11 +176,17 @@ jPCEPGrammar = {};
 	pcep.objects["BANDWIDTH"].name="BANDWIDTH",
 	pcep.objects["BANDWIDTH"].rfc="RFC5440"
 
-	//BANDWIDTH Object
+	//CLOSE Object
 	pcep.objects["CLOSE"] = new pcep.pcep_element();
 	pcep.objects["CLOSE"].type="object",
 	pcep.objects["CLOSE"].name="CLOSE",
 	pcep.objects["CLOSE"].rfc="RFC5440"
+
+	//CLASSTYPE Object
+	pcep.objects["CLASSTYPE"] = new pcep.pcep_element();
+	pcep.objects["CLASSTYPE"].type="object",
+	pcep.objects["CLASSTYPE"].name="CLASSTYPE",
+	pcep.objects["CLASSTYPE"].rfc="RFC5455"
 
 	//END-POINTS Object
 	pcep.objects["ENDPOINTS"] = new pcep.pcep_element();
@@ -383,30 +389,35 @@ jPCEPGrammar = {};
 		optional : false
 	};
 	pcep.constructs["segment-computation"].elems[1] = {
+		pcep_elem :  pcep.objects["CLASSTYPE"],
+		optional : true,
+		note: "RFC5455 mentions that CLASSTYPE object be inserted after the END-POINT objects is provided"
+	};
+	pcep.constructs["segment-computation"].elems[2] = {
 		pcep_elem :  pcep.objects["LSPA"],
 		optional : true
 	};
-	pcep.constructs["segment-computation"].elems[2] = {
+	pcep.constructs["segment-computation"].elems[3] = {
 		pcep_elem :  pcep.objects["BANDWIDTH"],
 		optional : true
 	};
-	pcep.constructs["segment-computation"].elems[3] = {
+	pcep.constructs["segment-computation"].elems[4] = {
 		pcep_elem :  pcep.lists["metric-list"],
 		optional : true
 	};
-	pcep.constructs["segment-computation"].elems[4] = {
+	pcep.constructs["segment-computation"].elems[5] = {
 		pcep_elem :  pcep.constructs["rro-bw-pair"],
 		optional : true
 	};
-	pcep.constructs["segment-computation"].elems[5] = {
+	pcep.constructs["segment-computation"].elems[6] = {
 		pcep_elem :  pcep.objects["IRO"],
 		optional : true
 	};
-	pcep.constructs["segment-computation"].elems[6] = {
+	pcep.constructs["segment-computation"].elems[7] = {
 		pcep_elem :  pcep.objects["LOAD-BALANCING"],
 		optional : true
 	};
-	pcep.constructs["segment-computation"].elems[7] = {
+	pcep.constructs["segment-computation"].elems[8] = {
 		pcep_elem :  pcep.objects["XRO"],
 		optional : true,
 		note: "no ordering in RFC5521 is provided"

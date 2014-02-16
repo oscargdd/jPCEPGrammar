@@ -172,6 +172,10 @@ body{
 	color: #FF3300;
 }
 
+#pcep_grammar span.object_RFC5455{
+	color: blue;
+}
+
 
 
 
