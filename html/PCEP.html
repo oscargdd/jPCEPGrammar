@@ -5,7 +5,8 @@
     <title>PCEP Grammar</title>
     <link rel="stylesheet" type="text/css" href="../css/pcep.css" />
     <script src="../../jquery/jquery-2.1.0.js"></script>
-    <script src="../js/jPCEPGrammar.js" type="text/javascript"></script>
+     <script src="../js/PCEPGrammar.js" type="text/javascript"></script>
+    <script src="../js/GrammarDraw.js" type="text/javascript"></script>
 </head>
 
 <body >
@@ -41,7 +42,7 @@
         <input type="checkbox" name="rfcs[]" value="RFC5521" checked> RFC 5521</input>
         <input type="checkbox" name="rfcs[]" value="RFC5455" checked> RFC 5455</input>
       </div>
-      <button id="mybutton" type="button" form= "pcep_inputs" onclick="jPCEPGrammar.draw_message(message_name.value)">Show grammar</button>  
+      <button id="mybutton" type="button" form= "pcep_inputs" onclick="jPCEPGrammarDraw.draw_message(message_name.value)">Show grammar</button>  
     </form>
     
     <div id="pcep_grammar_zone">    
