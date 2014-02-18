@@ -1,12 +1,12 @@
 /**
 
-pcep-grammar
+PCEP Grammar defined in JSON
 
 Javascript PCEP grammar library
 
 Supported RFCS:
 
-RFC 5440, RFC 5520, RFC 5521, RFC 5886
+RFC 5440, RFC 5455,RFC 5520, RFC 5521
 
 Oscar Gonzalez de Dios
 
@@ -15,6 +15,8 @@ Oscar Gonzalez de Dios
 PCEPGrammar = {};
 
 (function (pcep,$,undefined) {
+
+	pcep.supported_rfcs = ["RFC5440", "RFC5455", "RFC5520", "RFC5521"];
 
 	// List of PCEP Messages
 	pcep.messages = [];
@@ -104,11 +106,12 @@ PCEPGrammar = {};
 	};
 
 	//metric-list
-	pcep.lists["metric-list"] = {};
-	pcep.lists["metric-list"].type = "list";
-	pcep.lists["metric-list"].name = "metric-list";
-	pcep.lists["metric-list"].pcep_elem = pcep.objects["METRIC"];
-	pcep.lists["metric-list"].rfc="RFC5440";
+	pcep.lists["metric-list"] = {
+		type: "list",
+		name: "metric-list",
+		pcep_elem: pcep.objects["METRIC"],
+		rfc: "RFC5440"
+	};
 
 	//NO-PATH Object
 	pcep.objects["NO-PATH"] = {
@@ -125,11 +128,12 @@ PCEPGrammar = {};
 	};	
 
 	//NOTIFICATION-list
-	pcep.lists["notification-list"] ={};
-	pcep.lists["notification-list"].type = "list";
-	pcep.lists["notification-list"].name = "notification-list";
-	pcep.lists["notification-list"].pcep_elem = pcep.objects["NOTIFICATION"];
-	pcep.lists["notification-list"].rfc="RFC5440";
+	pcep.lists["notification-list"] ={
+		type: "list",
+		name: "notification-list",
+		pcep_elem: pcep.objects["NOTIFICATION"],
+		rfc: "RFC5440"
+	};
 
 	//OPEN Object
 	pcep.objects["OPEN"] = {
@@ -153,11 +157,12 @@ PCEPGrammar = {};
 	};	
 
 	//request-id-list
-	pcep.lists["error-obj-list"] ={};
-	pcep.lists["error-obj-list"].type = "list";
-	pcep.lists["error-obj-list"].name = "error-obj-list";
-	pcep.lists["error-obj-list"].pcep_elem = pcep.objects["PCEP-ERROR"];
-	pcep.lists["error-obj-list"].rfc="RFC5440";
+	pcep.lists["error-obj-list"] ={
+		type: "list",
+		name: "error-obj-list",
+		pcep_elem: pcep.objects["PCEP-ERROR"],
+		rfc: "RFC5440"
+	};
 
 	//RP Object
 	pcep.objects["RP"] = {
@@ -167,11 +172,12 @@ PCEPGrammar = {};
 	};	
 
 	//request-id-list
-	pcep.lists["request-id-list"] ={};
-	pcep.lists["request-id-list"].type = "list";
-	pcep.lists["request-id-list"].name = "request-id-list";
-	pcep.lists["request-id-list"].pcep_elem = pcep.objects["RP"];
-	pcep.lists["request-id-list"].rfc="RFC5440";
+	pcep.lists["request-id-list"] ={
+		type: "list",
+		name: "request-id-list",
+		pcep_elem: pcep.objects["RP"],
+		rfc: "RFC5440"
+	};
 
 	//RRO Object
 	pcep.objects["RRO"] = {
@@ -214,99 +220,86 @@ PCEPGrammar = {};
 	};	
 
 	//	attribute-list construct 
-	pcep.constructs["attribute-list"] ={};
-	pcep.constructs["attribute-list"].type = "construct";
-	pcep.constructs["attribute-list"].name = "attribute-list";
-	pcep.constructs["attribute-list"].elems =[];
-	pcep.constructs["attribute-list"].elems[0] = {
-		pcep_elem : pcep.objects["LSPA"],
-		optional : true
+	pcep.constructs["attribute-list"] = {
+			type: "construct",
+			name: "attribute-list",
+			elems: [{
+				pcep_elem : pcep.objects["LSPA"],
+				optional : true
+			}, {
+				pcep_elem : pcep.objects["BANDWIDTH"],
+				optional : true
+			},{
+				pcep_elem : pcep.lists["metric-list"],
+				optional : true
+			}, {
+				pcep_elem : pcep.objects["IRO"],
+				optional : true
+			}],
+		rfc: "RFC5440"
 	};
-	pcep.constructs["attribute-list"].elems[1] = {
-		pcep_elem : pcep.objects["BANDWIDTH"],
-		optional : true
-	};
-	pcep.constructs["attribute-list"].elems[2] = {
-		pcep_elem : pcep.lists["metric-list"],
-		optional : true
-	};
-	pcep.constructs["attribute-list"].elems[3] = {
-		pcep_elem : pcep.objects["IRO"],
-		optional : true
-	};
-	pcep.constructs["attribute-list"].rfc="RFC5440";
 
 	//	path construct 
-	pcep.constructs["path"] ={};
-	pcep.constructs["path"].type = "construct";
-	pcep.constructs["path"].name = "path";
-	pcep.constructs["path"].elems =[];
-	pcep.constructs["path"].elems[0] = {
-		pcep_elem : pcep.objects["ERO"],
-		optional : false
-	};
-	pcep.constructs["path"].elems[1] = {
-		pcep_elem : pcep.constructs["attribute-list"],
-		optional : true
-	};
-
-	pcep.constructs["path"].rfc="RFC5440";
+	pcep.constructs["path"] ={
+			type: "construct",
+			name: "path",
+			elems: [{
+				pcep_elem : pcep.objects["ERO"],
+				optional : true
+			}, {
+				pcep_elem : pcep.constructs["attribute-list"],
+				optional : true
+			}],
+		rfc: "RFC5440"
+	}
 
 
 	//attribute-list
-	pcep.lists["path-list"] ={};
-	pcep.lists["path-list"].type = "list";
-	pcep.lists["path-list"].name = "path-list";
-	pcep.lists["path-list"].pcep_elem = pcep.constructs["path"];
-	pcep.lists["path-list"].rfc="RFC5440";
+	pcep.lists["path-list"] ={
+		type: "list",
+		name: "path-list",
+		pcep_elem: pcep.constructs["path"],
+		rfc: "RFC5440"
+	};
 
 	// Segment-computation
-	pcep.constructs["segment-computation"] = {};
-	pcep.constructs["segment-computation"].type = "construct";
-	pcep.constructs["segment-computation"].name = "segment-computation";
-	pcep.constructs["segment-computation"].elems =[];
-	pcep.constructs["segment-computation"].elems[0] = {
-		pcep_elem :  pcep.objects["END-POINTS"],
-		optional : false
-	};
-	pcep.constructs["segment-computation"].elems[1] = {
-		pcep_elem :  pcep.objects["CLASSTYPE"],
-		optional : true,
-		note: "RFC5455 mentions that CLASSTYPE object be inserted after the END-POINT objects is provided"
-	};
-	pcep.constructs["segment-computation"].elems[2] = {
-		pcep_elem :  pcep.objects["LSPA"],
-		optional : true
-	};
-	pcep.constructs["segment-computation"].elems[3] = {
-		pcep_elem :  pcep.objects["BANDWIDTH"],
-		optional : true
-	};
-	pcep.constructs["segment-computation"].elems[4] = {
-		pcep_elem :  pcep.lists["metric-list"],
-		optional : true
-	};
-	pcep.constructs["segment-computation"].elems[5] = {
-		pcep_elem :  pcep.constructs["rro-bw-pair"],
-		optional : true
-	};
-	pcep.constructs["segment-computation"].elems[6] = {
-		pcep_elem :  pcep.objects["IRO"],
-		optional : true
-	};
-	pcep.constructs["segment-computation"].elems[7] = {
+	pcep.constructs["segment-computation"] = {
+		type: "construct",
+		name: "segment-computation",
+		pcep_elem: [{
+			pcep_elem :  pcep.objects["END-POINTS"],
+			optional : false
+		},{
+			pcep_elem :  pcep.objects["CLASSTYPE"],
+			optional : true,
+			note: "RFC5455 mentions that CLASSTYPE object be inserted after the END-POINT objects is provided"
+		},{
+			pcep_elem :  pcep.objects["LSPA"],
+			optional : true
+		},{
+			pcep_elem :  pcep.objects["BANDWIDTH"],
+			optional : true
+		},{
+			pcep_elem :  pcep.lists["metric-list"],
+			optional : true
+		},{
+			pcep_elem :  pcep.constructs["rro-bw-pair"],
+			optional : true
+		},{
+			pcep_elem :  pcep.objects["IRO"],
+			optional : true
+		},{
 		pcep_elem :  pcep.objects["LOAD-BALANCING"],
 		optional : true
+		}, {
+			pcep_elem :  pcep.objects["XRO"],
+			optional : true,
+			note: "no ordering in RFC5521 is provided"
+		}],
+		rfc: "RFC5440",
+		note:  "The construct path-key-expansion really appeard in RF5220, but it contains all the objects of the request as defined in RFC5440";
 	};
-	pcep.constructs["segment-computation"].elems[8] = {
-		pcep_elem :  pcep.objects["XRO"],
-		optional : true,
-		note: "no ordering in RFC5521 is provided"
-	};
-
-	pcep.constructs["segment-computation"].rfc = "RFC5440";
-	pcep.constructs["segment-computation"].note = "The construct path-key-expansion really appeard in RF5220, but it contains all the objects of the request as defined in RFC5440";
-
+	
 	//path-key-expansion
 	pcep.constructs["path-key-expansion"] ={};
 	pcep.constructs["path-key-expansion"].type = "construct";
