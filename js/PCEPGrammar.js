@@ -156,7 +156,7 @@ PCEPGrammar = {};
 		rfc: "RFC5440"
 	};	
 
-	//request-id-list
+	//error-obj-list
 	pcep.lists["error-obj-list"] ={
 		type: "list",
 		name: "error-obj-list",
@@ -315,12 +315,12 @@ PCEPGrammar = {};
 		type: "choice",
 		name: "seg-com-pke",
 		elems: [{
-			pcep_elem : constructs["segment-computation"],
+			pcep_elem : pcep.constructs["segment-computation"],
 			optional : false
-		}],{
-		pcep_elem : pcep.constructs["path-key-expansion"],
-		optional : false
-		},
+		},{
+			pcep_elem : pcep.constructs["path-key-expansion"],
+			optional : false
+		}],
 		rfc: "RFC5520"
 	};
 
@@ -377,7 +377,7 @@ PCEPGrammar = {};
 		rfc: "RFC5440"
 	};
 
-	//	Construct 
+	//	Construct notify
 	pcep.constructs["notify"] ={
 		type: "construct",
 		name: "notify",
@@ -410,41 +410,40 @@ PCEPGrammar = {};
 	};
 
 	//error-open construct
-	pcep.constructs["error-open"] ={};
-	pcep.constructs["error-open"].type = "construct";
-	pcep.constructs["error-open"].name = "error-open";
-	pcep.constructs["error-open"].elems =[];
-	pcep.constructs["error-open"].elems[0] = {
-		pcep_elem : pcep.lists["error-obj-list"],
-		optional : false
+	pcep.constructs["error-open"] ={
+		type: "construct",
+		name: "error-open",
+		elems: [ {
+			pcep_elem : pcep.lists["error-obj-list"],
+			optional : true
+		},{
+			pcep_elem : pcep.objects["OPEN"],
+			optional : false
+		}],
+		rfc: "RFC5440"
 	};
-	pcep.constructs["error-open"].elems[1] = {
-		pcep_elem : pcep.objects["OPEN"],
-		optional : true
-	};
-	pcep.constructs["error-open"].rfc="RFC5440";
 
 	//error construct
-	pcep.constructs["error"] ={};
-	pcep.constructs["error"].type = "construct";
-	pcep.constructs["error"].name = "error";
-	pcep.constructs["error"].elems =[];
-	pcep.constructs["error"].elems[0] = {
-		pcep_elem : pcep.lists["request-id-list"],
-		optional : false
+	pcep.constructs["error"] ={
+		type: "construct",
+		name: "error",
+		elems: [ {
+			pcep_elem : pcep.lists["request-id-list"],
+			optional : true
+		},{
+			pcep_elem : pcep.lists["error-obj-list"],
+			optional : false
+		}],
+		rfc: "RFC5440"
 	};
-	pcep.constructs["error"].elems[1] = {
-		pcep_elem : pcep.lists["error-obj-list"],
-		optional : true
-	};
-	pcep.constructs["error"].rfc="RFC5440";
 
 	//error-list
-	pcep.lists["error-list"] ={};
-	pcep.lists["error-list"].type = "list";
-	pcep.lists["error-list"].name = "error-list";
-	pcep.lists["error-list"].pcep_elem = pcep.constructs["error"];
-	pcep.lists["error-list"].rfc="RFC5440";
+	pcep.lists["error-list"] ={
+		type: "list",
+		name: "error-list",
+		pcep_elem: pcep.constructs["error"],
+		rfc: "RFC5440"
+	};
 
 	//err-choice
 	pcep.choices["err-choice"] ={};
