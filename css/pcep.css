@@ -180,6 +180,10 @@ body{
 	color: blue;
 }
 
+#pcep_grammar span.object_RFC5520{
+	color: green;
+}
+
 
 
 

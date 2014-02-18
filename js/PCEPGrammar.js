@@ -266,7 +266,7 @@ PCEPGrammar = {};
 	pcep.constructs["segment-computation"] = {
 		type: "construct",
 		name: "segment-computation",
-		pcep_elem: [{
+		elems: [{
 			pcep_elem :  pcep.objects["END-POINTS"],
 			optional : false
 		},{
@@ -297,118 +297,117 @@ PCEPGrammar = {};
 			note: "no ordering in RFC5521 is provided"
 		}],
 		rfc: "RFC5440",
-		note:  "The construct path-key-expansion really appeard in RF5220, but it contains all the objects of the request as defined in RFC5440";
+		note:  "The construct path-key-expansion really appeard in RF5220, but it contains all the objects of the request as defined in RFC5440"
 	};
 	
 	//path-key-expansion
-	pcep.constructs["path-key-expansion"] ={};
-	pcep.constructs["path-key-expansion"].type = "construct";
-	pcep.constructs["path-key-expansion"].name = "path-key-expansion";
-	pcep.constructs["path-key-expansion"].elems =[];
-	pcep.constructs["path-key-expansion"].elems[0] = {
-		pcep_elem : pcep.objects["PATH-KEY"],
-		optional : false
+	pcep.constructs["path-key-expansion"] ={
+		type: "construct",
+		name: "path-key-expansion",
+		elems: [{
+			pcep_elem : pcep.objects["PATH-KEY"],
+			optional : false
+		}],
+		rfc: "RFC5520"
 	};
-	pcep.constructs["path-key-expansion"].rfc = "RFC5520";
 
-	pcep.choices["seg-com-pke"] ={};
-	pcep.choices["seg-com-pke"].type = "choice";
-	pcep.choices["seg-com-pke"].name = "seg-com-pke";
-	pcep.choices["seg-com-pke"].elems = [];
-	pcep.choices["seg-com-pke"].elems[0] = {
-		pcep_elem : pcep.constructs["segment-computation"],
-		optional : false
-	};
-	pcep.choices["seg-com-pke"].elems[1] = {
+	pcep.choices["seg-com-pke"] ={
+		type: "choice",
+		name: "seg-com-pke",
+		elems: [{
+			pcep_elem : constructs["segment-computation"],
+			optional : false
+		}],{
 		pcep_elem : pcep.constructs["path-key-expansion"],
 		optional : false
+		},
+		rfc: "RFC5520"
 	};
-	pcep.choices["seg-com-pke"].rfc = "RFC5440";
 
 	//	Construct request
-	pcep.constructs["request"] ={};
-	pcep.constructs["request"].type = "construct";
-	pcep.constructs["request"].name = "request";
-	pcep.constructs["request"].elems =[];
-	pcep.constructs["request"].elems[0] = {
-		pcep_elem : pcep.objects["RP"],
-		optional : false
-	};
-	pcep.constructs["request"].elems[1] = {
+	pcep.constructs["request"] ={
+		type: "construct",
+		name: "request",
+		elems: [{
+			pcep_elem : pcep.objects["RP"],
+			optional : false
+		},{
 		pcep_elem : pcep.choices["seg-com-pke"],
 		optional : false
+		}
+		],
+		rfc: "RFC5440"
 	};
-	pcep.constructs["request"].rfc = "RFC5440";
 
 	//request-list
-	pcep.lists["request-list"] ={};
-	pcep.lists["request-list"].type = "list";
-	pcep.lists["request-list"].name = "request-list";
-	pcep.lists["request-list"].pcep_elem = pcep.constructs["request"];
-	pcep.lists["request-list"].rfc="RFC5440";
+	pcep.lists["request-list"] = {
+		type: "list",
+		name: "request-list",
+		pcep_elem: pcep.constructs["request"],
+		rfc: "RFC5440"
+	};
 
 	//	Construct response
-	pcep.constructs["response"] ={};
-	pcep.constructs["response"].type = "construct";
-	pcep.constructs["response"].name = "response";
-	pcep.constructs["response"].elems =[];
-	pcep.constructs["response"].elems[0] = {
-		pcep_elem : pcep.objects["RP"],
-		optional : false
+	pcep.constructs["response"] ={
+		type: "construct",
+		name: "response",
+		pcep_elems: [ {
+			pcep_elem : pcep.objects["RP"],
+			optional : false
+		},{
+			pcep_elem : pcep.objects["NO-PATH"],
+			optional : true
+		},{
+			pcep_elem : pcep.constructs["attribute-list"],
+			optional : true
+		},{
+			pcep_elem : pcep.lists["path-list"],
+			optional : true
+		}],
+		rfc: "RFC5440"
 	};
-	pcep.constructs["response"].elems[1] = {
-		pcep_elem : pcep.objects["NO-PATH"],
-		optional : true
-	};
-	pcep.constructs["response"].elems[2] = {
-		pcep_elem : pcep.constructs["attribute-list"],
-		optional : true
-	};
-	pcep.constructs["response"].elems[3] = {
-		pcep_elem : pcep.lists["path-list"],
-		optional : true
-	};
-	pcep.constructs["response"].rfc="RFC5440";
 
 	//Lists
 
 	//response-list
-	pcep.lists["response-list"] ={};
-	pcep.lists["response-list"].type = "list";
-	pcep.lists["response-list"].name = "response-list";
-	pcep.lists["response-list"].pcep_elem = pcep.constructs["response"];
-	pcep.lists["response-list"].rfc="RFC5440";
+	pcep.lists["response-list"] ={
+		type: "list",
+		name: "response-list",
+		pcep_elem: pcep.constructs["response"],
+		rfc: "RFC5440"
+	};
 
-//	Construct response
-	pcep.constructs["notify"] ={};
-	pcep.constructs["notify"].type = "construct";
-	pcep.constructs["notify"].name = "notify";
-	pcep.constructs["notify"].elems =[];
-	pcep.constructs["notify"].elems[0] = {
-		pcep_elem : pcep.lists["request-id-list"],
-		optional : true
+	//	Construct 
+	pcep.constructs["notify"] ={
+		type: "construct",
+		name: "notify",
+		pcep_elems: [ {
+			pcep_elem : pcep.lists["request-id-list"],
+			optional : true
+		},{
+			pcep_elem : pcep.lists["notification-list"],
+			optional : false
+		}],
+		rfc: "RFC5440"
 	};
-	pcep.constructs["notify"].elems[1] = {
-		pcep_elem : pcep.lists["notification-list"],
-		optional : false
-	};
-	pcep.constructs["notify"].rfc="RFC5440";
 
 	//Lists
 
 	//notify-list
-	pcep.lists["notify-list"] ={};
-	pcep.lists["notify-list"].type = "list";
-	pcep.lists["notify-list"].name = "notify-list";
-	pcep.lists["notify-list"].pcep_elem = pcep.constructs["notify"];
-	pcep.lists["notify-list"].rfc="RFC5440";
+	pcep.lists["notify-list"] ={
+		type: "list",
+		name: "notify-list",
+		pcep_elem: pcep.constructs["notify"],
+		rfc: "RFC5440"
+	};
 
 	//svec-list
-	pcep.lists["svec-list"] ={};
-	pcep.lists["svec-list"].type = "list";
-	pcep.lists["svec-list"].name = "svec-list";
-	pcep.lists["svec-list"].pcep_elem = pcep.objects["SVEC"];
-	pcep.lists["svec-list"].rfc="RFC5440";
+	pcep.lists["svec-list"] ={
+		type: "list",
+		name: "svec-list",
+		pcep_elem: pcep.objects["SVEC"],
+		rfc: "RFC5440"
+	};
 
 	//error-open construct
 	pcep.constructs["error-open"] ={};
@@ -512,18 +511,18 @@ PCEPGrammar = {};
 		};
 	pcep.messages["PCReqMessage"].rfc="RFC5440";
      
-	pcep.messages["PCRep Message"] ={};
-	pcep.messages["PCRep Message"].name = "PCRep Message"
-	pcep.messages["PCRep Message"].elems =[];
-		pcep.messages["PCRep Message"].elems[0] = {
+	pcep.messages["PCRep Message"] ={
+		type: "message",
+		name: "PCRep Message",
+		elems: [{
 			pcep_elem : pcep_common_header,
 			optional : false
-		};
-		pcep.messages["PCRep Message"].elems[1] = {
+		},{
 			pcep_elem : pcep.lists["response-list"],
 			optional : false
-		};
-	pcep.messages["PCRep Message"].rfc="RFC5440";
+		}],
+		rfc: "RFC5440"
+	};
 
 	 //PCEP Notification Message
 	pcep.messages["PCNtf Message"] ={
