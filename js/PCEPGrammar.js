@@ -351,7 +351,7 @@ PCEPGrammar = {};
 	pcep.constructs["response"] ={
 		type: "construct",
 		name: "response",
-		pcep_elems: [ {
+		elems: [ {
 			pcep_elem : pcep.objects["RP"],
 			optional : false
 		},{
@@ -381,7 +381,7 @@ PCEPGrammar = {};
 	pcep.constructs["notify"] ={
 		type: "construct",
 		name: "notify",
-		pcep_elems: [ {
+		elems: [ {
 			pcep_elem : pcep.lists["request-id-list"],
 			optional : true
 		},{
@@ -446,69 +446,62 @@ PCEPGrammar = {};
 	};
 
 	//err-choice
-	pcep.choices["err-choice"] ={};
-	pcep.choices["err-choice"].type = "choice";
-	pcep.choices["err-choice"].name = "err-choice";
-	pcep.choices["err-choice"].elems = [];
-	pcep.choices["err-choice"].elems[0] = {
+	pcep.choices["err-choice"] ={
+		type: "choice",
+		name: "err-choice",
+		elems: [{
 		pcep_elem : pcep.constructs["error-open"],
 		optional : false
-	};
-	pcep.choices["err-choice"].elems[1] = {
+		},{
 		pcep_elem : pcep.lists["error-obj-list"],
 		optional : false
+		}],
+		rfc: "RFC5440"
 	};
-	pcep.choices["err-choice"].rfc = "RFC5440";
 
 	//Messages
 
 	//PCEP Open Message
 	pcep.messages["Open Message"] ={
-		type: "message"
+		type: "message",
+		name: "Open Message",
+		elems: [{
+			pcep_elem : pcep_common_header,
+			optional : false
+		},{
+			pcep_elem : pcep.objects["OPEN"],
+			optional : true
+		}],
+		rfc: "RFC5440"
 	};
-	pcep.messages["Open Message"].name = "Open Message"
-	pcep.messages["Open Message"].elems =[];
-    pcep.messages["Open Message"].elems[0] = {
-		pcep_elem : pcep_common_header,
-		optional : false
-	};
-	pcep.messages["Open Message"].elems[1] = {
-		pcep_elem : pcep.objects["OPEN"],
-		optional : true
-	};
-	pcep.messages["Open Message"].rfc="RFC5440";
 
 	//PCEP Keepalive Message
 	pcep.messages["Keepalive Message"] ={
-		type: "message"
-	};
-	pcep.messages["Keepalive Message"].name = "Keepalive Message"
-	pcep.messages["Keepalive Message"].elems =[];
-		pcep.messages["Keepalive Message"].elems[0] = {
+		type: "message",
+		name: "Keepalive Message",
+		elems: [{
 			pcep_elem : pcep_common_header,
 			optional : false
-		};
-	pcep.messages["Keepalive Message"].rfc="RFC5440";
+		}],
+		rfc: "RFC5440"
+	};
 
    //PCEP Request Message
 	pcep.messages["PCReqMessage"] ={
-		type: "message"
-	};
-	pcep.messages["PCReqMessage"].name = "PCReqMessage"
-	pcep.messages["PCReqMessage"].elems =[];
-		pcep.messages["PCReqMessage"].elems[0] = {
+		type: "message",
+		name: "PCReqMessage",
+		elems: [{
 			pcep_elem : pcep_common_header,
 			optional : false
-		};
-		pcep.messages["PCReqMessage"].elems[1] = {
+		},{
 			pcep_elem : pcep.lists["svec-list"],
 			optional : true
-		};
-		pcep.messages["PCReqMessage"].elems[2] = {
+		},{
 			pcep_elem : pcep.lists["request-list"],
 			optional : false
-		};
-	pcep.messages["PCReqMessage"].rfc="RFC5440";
+		}],
+		rfc: "RFC5440"
+	};
      
 	pcep.messages["PCRep Message"] ={
 		type: "message",
@@ -525,40 +518,34 @@ PCEPGrammar = {};
 
 	 //PCEP Notification Message
 	pcep.messages["PCNtf Message"] ={
-		type: "message"
-	};
-	pcep.messages["PCNtf Message"].name = "PCNtf Message"
-	pcep.messages["PCNtf Message"].elems =[];
-		pcep.messages["PCNtf Message"].elems[0] = {
+		type: "message",
+		name: "PCNtf Message",
+		elems: [{
 			pcep_elem : pcep_common_header,
 			optional : false
-		};
-		pcep.messages["PCNtf Message"].elems[1] = {
+		},{
 			pcep_elem : pcep.lists["notify-list"],
 			optional : false
-		};
-	pcep.messages["PCNtf Message"].rfc="RFC5440"; 
+		}],
+		rfc: "RFC5440"
+	};
 
 	//PCEP Error Message
 	pcep.messages["PCErr Message"] ={
-		type: "message"
-	};
-	pcep.messages["PCErr Message"].name = "PCErr Message"
-	pcep.messages["PCErr Message"].elems =[];
-	pcep.messages["PCErr Message"].elems[0] = {
+		type: "message",
+		name: "PCErr Message",
+		elems: [{
 		pcep_elem : pcep_common_header,
 		optional : false
+		}, {
+			pcep_elem : pcep.choices["err-choice"],
+			optional : false
+		},{
+			pcep_elem : pcep.lists["error-list"],
+			optional : false
+		} ],
+		rfc: "RFC5440"
 	};
-	pcep.messages["PCErr Message"].elems[1] = {
-		pcep_elem : pcep.choices["err-choice"],
-		optional : false
-	};
-	pcep.messages["PCErr Message"].elems[2] = {
-		pcep_elem : pcep.lists["error-list"],
-		optional : false
-	};
-	pcep.messages["PCErr Message"].rfc="RFC5440"; 
-
 
 	//PCEP Close Message
 	pcep.messages["Close Message"] = {
