@@ -67,11 +67,14 @@ jPCEPGrammarDraw = {};
 					definition.addClass("definition");
 					definition.append(definition);
 					elem_definition.append(definition);
-					for (var elem in pcep.constructs[element.name].elems) {
-						console.log("cucu "+elem+" eso " +pcep.constructs[element.name].elems[elem].pcep_elem);
-						console.log("C:"+ element.name+ " Nos metemos en "+elem+" se llama "+pcep.constructs[element.name].elems[elem].pcep_elem.name);
+					for (var elem in pcep[element.name].elems) {
+						console.log("papa vale "+element.name);
 
-						definition.append(gd.getHTML(element.elems[elem].pcep_elem, RFCfilter, pcep.constructs[element.name].elems[elem].optional));
+						console.log("cucu "+elem+" eso " +pcep[element.name].elems[elem].elem);
+						console.log("C:"+ element.name+ " Nos metemos en "+elem+" se llama "+pcep[element.name].elems[elem].elem.name);
+
+						definition.append(gd.getHTML(element.elems[elem].elem, RFCfilter, pcep[element.name].elems[elem].optional));
+
 					}
 					
 				} else if (element.type == "choice") {
@@ -87,6 +90,7 @@ jPCEPGrammarDraw = {};
 						}						
 					}
 				} else if (element.type == "list"){
+					console.log("Entrando en "+element.name);
 					newElem = $('<span />');
 					newElem.addClass("list."+element.rfc);				
 					if (optional == true){
@@ -107,7 +111,7 @@ jPCEPGrammarDraw = {};
 					var definition = $('<div />');
 					definition.addClass("definition");
 					definition.append(definition);
-					definition.append(gd.getHTML(element.pcep_elem, RFCfilter,false));
+					definition.append(gd.getHTML(element.elems[0].elem, RFCfilter,false));
 					var definition_text = '[&#60;'+ element.name+'&#62]';
 					definition.append(definition_text);
 					elem_definition.append(definition);
@@ -128,7 +132,9 @@ jPCEPGrammarDraw = {};
 					definition.addClass("definition");
 					newElem.append(definition);
 					for (var elem in element.elems) {
-						definition.append(gd.getHTML(element.elems[elem].pcep_elem, RFCfilter, element.elems[elem].optional));
+						//definition.append(gd.getHTML(element.elems[elem].elem, RFCfilter, element.elems[elem].optional));
+						definition.append(gd.getHTML(element.elems[elem].elem, RFCfilter, false));
+					
 					}
 					
 				}
@@ -149,12 +155,12 @@ jPCEPGrammarDraw = {};
 		$('#RFCs input:checked').each(function() {
     		RFCfilter.push(this.value);
 		});
-		newElem.prepend(gd.getHTML(pcep.messages[message_name], RFCfilter));
+		newElem.prepend(gd.getHTML(pcep[message_name], RFCfilter));
 	}
 
 
 }
 
-) (jPCEPGrammarDraw, PCEPGrammar,jQuery);
+) (jPCEPGrammarDraw, a,jQuery);
 
 
