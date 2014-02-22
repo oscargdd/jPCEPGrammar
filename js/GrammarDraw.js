@@ -52,8 +52,7 @@ jPCEPGrammarDraw = {};
 					}else {
 						newElem.append('&#60;'+ element.name+'&#62;');
 					}
-					//FIXME: CHECK IF CONSTRhUCT HAS ALREADY BEEN DRAWN
-					if ($.inArray(element.name,gd.shown)!=0) {
+					if ($.inArray(element.name,gd.shown)<0) {
 						gd.shown.push(element.name);				
 						//A new element defintion is created to define the construct
 						var elem_definition= $('<div />');
@@ -80,7 +79,7 @@ jPCEPGrammarDraw = {};
 						newElem.append('[');
 					}
 					for (var elem in element.elems) {
-						newElem.append(gd.getHTML(element.elems[elem].pcep_elem, RFCfilter, element.elems[elem].optional));
+						newElem.append(gd.getHTML(pcep[element.elems[elem].elem], RFCfilter, false));
 						if (elem < element.elems.length-1){
 							newElem.append('|');	
 						}						
@@ -95,25 +94,26 @@ jPCEPGrammarDraw = {};
 					}else {
 						newElem.append('&#60;'+ element.name+'&#62;');
 					}
-					//FIXME: CHECK IF LIST HAS ALREADY BEEN DRAWN
-					if ($)
-					var elem_definition= $('<div />');
-					$('#grammar_content').append(elem_definition);
-					elem_definition.addClass("elem_definition");
-					var defined_element = $('<div />');
-					defined_element.addClass("defined_element");
-					var displayText = '&#60;'+ element.name+'&#62;'+"::=";
-					defined_element.append(displayText);
-					elem_definition.append(defined_element);
-					var definition = $('<div />');
-					definition.addClass("definition");
-					definition.append(definition);
-					console.log("Lista: vamo a ve... "+element.elems[0].elem);
-					definition.append(gd.getHTML(pcep[element.elems[0].elem], RFCfilter,false));
-					var definition_text = '[&#60;'+ element.name+'&#62]';
-					definition.append(definition_text);
-					elem_definition.append(definition);
-		
+					if ($.inArray(element.name,gd.shown)<0) {
+						console.log("------------- "+element.name+" no esta defnidio aun da "+$.inArray(element.name,gd.shown));
+						gd.shown.push(element.name);	
+						var elem_definition= $('<div />');
+						$('#grammar_content').append(elem_definition);
+						elem_definition.addClass("elem_definition");
+						var defined_element = $('<div />');
+						defined_element.addClass("defined_element");
+						var displayText = '&#60;'+ element.name+'&#62;'+"::=";
+						defined_element.append(displayText);
+						elem_definition.append(defined_element);
+						var definition = $('<div />');
+						definition.addClass("definition");
+						definition.append(definition);
+						console.log("Lista: vamo a ve... "+element.elems[0].elem);
+						definition.append(gd.getHTML(pcep[element.elems[0].elem], RFCfilter,false));
+						var definition_text = '[&#60;'+ element.name+'&#62]';
+						definition.append(definition_text);
+						elem_definition.append(definition);
+					}
 				}else {
 					console.log("Es un mensajito");
 					//It is a message
