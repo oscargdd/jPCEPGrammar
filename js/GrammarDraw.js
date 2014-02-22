@@ -44,7 +44,6 @@ jPCEPGrammarDraw = {};
 					newElem = $('<span />');
 					newElem.append('&#60;'+ element.name+'&#62;');
 				} else if (element.type == "construct"){
-					console.log("ccccc "+element.name);
 					// The element is a construct
 					newElem = $('<span />');
 					newElem.addClass("construct_"+element.rfc);				
@@ -54,27 +53,24 @@ jPCEPGrammarDraw = {};
 						newElem.append('&#60;'+ element.name+'&#62;');
 					}
 					//FIXME: CHECK IF CONSTRhUCT HAS ALREADY BEEN DRAWN
-					//A new element defintion is created to define the construct
-					var elem_definition= $('<div />');
-					$('#grammar_content').append(elem_definition);
-					elem_definition.addClass("elem_definition");
-					var defined_element = $('<div />');
-					defined_element.addClass("defined_element");
-					var displayText = '&#60;'+ element.name+'&#62;'+"::==";
-					defined_element.append(displayText);
-					elem_definition.append(defined_element);
-					var definition = $('<div />');
-					definition.addClass("definition");
-					definition.append(definition);
-					elem_definition.append(definition);
-					for (var elem in pcep[element.name].elems) {
-						console.log("papa vale "+element.name);
-
-						console.log("cucu "+elem+" eso " +pcep[element.name].elems[elem].elem);
-						console.log("C:"+ element.name+ " Nos metemos en "+elem+" se llama "+pcep[element.name].elems[elem].elem.name);
-
-						definition.append(gd.getHTML(element.elems[elem].elem, RFCfilter, pcep[element.name].elems[elem].optional));
-
+					if ($.inArray(element.name,gd.shown)!=0) {
+						gd.shown.push(element.name);				
+						//A new element defintion is created to define the construct
+						var elem_definition= $('<div />');
+						$('#grammar_content').append(elem_definition);
+						elem_definition.addClass("elem_definition");
+						var defined_element = $('<div />');
+						defined_element.addClass("defined_element");
+						var displayText = '&#60;'+ element.name+'&#62;'+"::==";
+						defined_element.append(displayText);
+						elem_definition.append(defined_element);
+						var definition = $('<div />');
+						definition.addClass("definition");
+						definition.append(definition);
+						elem_definition.append(definition);
+						for (var elem in pcep[element.name].elems) {
+							definition.append(gd.getHTML(pcep[element.elems[elem].elem], RFCfilter, pcep[element.name].elems[elem].optional));
+						}
 					}
 					
 				} else if (element.type == "choice") {
@@ -90,7 +86,7 @@ jPCEPGrammarDraw = {};
 						}						
 					}
 				} else if (element.type == "list"){
-					console.log("Entrando en "+element.name);
+					console.log("Lista: Entrando en "+element.name);
 					newElem = $('<span />');
 					newElem.addClass("list."+element.rfc);				
 					if (optional == true){
@@ -100,6 +96,7 @@ jPCEPGrammarDraw = {};
 						newElem.append('&#60;'+ element.name+'&#62;');
 					}
 					//FIXME: CHECK IF LIST HAS ALREADY BEEN DRAWN
+					if ($)
 					var elem_definition= $('<div />');
 					$('#grammar_content').append(elem_definition);
 					elem_definition.addClass("elem_definition");
@@ -111,7 +108,8 @@ jPCEPGrammarDraw = {};
 					var definition = $('<div />');
 					definition.addClass("definition");
 					definition.append(definition);
-					definition.append(gd.getHTML(element.elems[0].elem, RFCfilter,false));
+					console.log("Lista: vamo a ve... "+element.elems[0].elem);
+					definition.append(gd.getHTML(pcep[element.elems[0].elem], RFCfilter,false));
 					var definition_text = '[&#60;'+ element.name+'&#62]';
 					definition.append(definition_text);
 					elem_definition.append(definition);
@@ -133,7 +131,7 @@ jPCEPGrammarDraw = {};
 					newElem.append(definition);
 					for (var elem in element.elems) {
 						//definition.append(gd.getHTML(element.elems[elem].elem, RFCfilter, element.elems[elem].optional));
-						definition.append(gd.getHTML(element.elems[elem].elem, RFCfilter, false));
+						definition.append(gd.getHTML(pcep[element.elems[elem].elem], RFCfilter, element.elems[elem].optional));
 					
 					}
 					
@@ -155,12 +153,13 @@ jPCEPGrammarDraw = {};
 		$('#RFCs input:checked').each(function() {
     		RFCfilter.push(this.value);
 		});
+		gd.shown=[];
 		newElem.prepend(gd.getHTML(pcep[message_name], RFCfilter));
 	}
 
 
 }
 
-) (jPCEPGrammarDraw, a,jQuery);
+) (jPCEPGrammarDraw, RFC5440,jQuery);
 
 
