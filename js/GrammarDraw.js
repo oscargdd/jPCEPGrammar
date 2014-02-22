@@ -61,7 +61,7 @@ jPCEPGrammarDraw = {};
 						elem_definition.addClass("elem_definition");
 						var defined_element = $('<div />');
 						defined_element.addClass("defined_element");
-						var displayText = '&#60;'+ element.name+'&#62;'+"::==";
+						var displayText = '&#60;'+ element.name+'&#62;'+"::=";
 						defined_element.append(displayText);
 						elem_definition.append(defined_element);
 						var definition = $('<div />');
@@ -102,7 +102,7 @@ jPCEPGrammarDraw = {};
 					elem_definition.addClass("elem_definition");
 					var defined_element = $('<div />');
 					defined_element.addClass("defined_element");
-					var displayText = '&#60;'+ element.name+'&#62;'+"::==";
+					var displayText = '&#60;'+ element.name+'&#62;'+"::=";
 					defined_element.append(displayText);
 					elem_definition.append(defined_element);
 					var definition = $('<div />');
@@ -122,7 +122,7 @@ jPCEPGrammarDraw = {};
 					//Create a div for the defined element
 					var defined_element = $('<div />');
 					defined_element.addClass("defined_element");
-					var displayText = element.name+":==";
+					var displayText = element.name+"::=";
 					defined_element.append(displayText);
 					newElem.append(defined_element);
 					//Create another div for the defnition itself
