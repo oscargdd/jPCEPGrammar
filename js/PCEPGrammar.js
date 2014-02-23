@@ -1,6 +1,11 @@
-grammar = {
+grammar= {
     "rfcs": [
-        "RFC5440", "RFC5520", "RFC5551","RFC5455"
+        "RFC5440",
+        "RFC5520",
+        "RFC5551",
+        "RFC5455",
+        "RFC5541",
+        "RFC5557"
     ],
     "elements": {
         "Open Message": {
@@ -47,7 +52,7 @@ grammar = {
                     "optional": false
                 },
                 {
-                    "elem": "svec-list",
+                    "elem": "svec-tuple-list",
                     "optional": true
                 },
                 {
@@ -85,7 +90,7 @@ grammar = {
             "type": "object",
             "rfc": "RFC5440"
         },
-         "request": {
+        "request": {
             "name": "request",
             "elems": [
                 {
@@ -223,6 +228,10 @@ grammar = {
         "attribute-list": {
             "name": "attribute-list",
             "elems": [
+                {
+                    "elem": "OF",
+                    "optional": true
+                },
                 {
                     "elem": "LSPA",
                     "optional": true
@@ -492,6 +501,10 @@ grammar = {
                     "optional": true
                 },
                 {
+                    "elem": "OF",
+                    "optional": true
+                },
+                {
                     "elem": "rro-bw-pair",
                     "optional": true
                 },
@@ -540,7 +553,59 @@ grammar = {
             "name": "CLASSTYPE",
             "type": "object",
             "rfc": "RFC5455"
+        },
+        "svec-tuple": {
+            "name": "svec-tuple",
+            "elems": [
+                {
+                    "elem": "SVEC",
+                    "optional": false
+                },
+                {
+                    "elem": "OF",
+                    "optional": true
+                },
+                {
+                    "elem": "metric-list",
+                    "optional": true
+                },
+                {
+                    "elem": "GC",
+                    "optional": true
+                },
+                {
+                    "elem": "XRO",
+                    "optional": true
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5440"
+        },
+        "OF": {
+            "name": "OF",
+            "type": "object",
+            "rfc": "RFC5541"
+        },
+        "vendor-info-list": {
+            "name": "vendor-info-list",
+            "type": "object",
+            "rfc": "RFC5557"
+        },
+        "GC": {
+            "name": "GC",
+            "type": "object",
+            "rfc": "RFC5557"
+        },
+        "svec-tuple-list": {
+            "name": "svec-tuple-list",
+            "elems": [
+                {
+                    "elem": "svec-tuple",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
         }
-
     }
 }
