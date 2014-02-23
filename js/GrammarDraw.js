@@ -160,6 +160,6 @@ jPCEPGrammarDraw = {};
 
 }
 
-) (jPCEPGrammarDraw, RFC5440,jQuery);
+) (jPCEPGrammarDraw, grammar.elements,jQuery);
 
 

@@ -1,569 +1,546 @@
-/**
-
-PCEP Grammar defined in JSON
-
-Javascript PCEP grammar library
-
-Supported RFCS:
-
-RFC 5440, RFC 5455,RFC 5520, RFC 5521
-
-Oscar Gonzalez de Dios
-
-*/
-
-PCEPGrammar = {};
-
-(function (pcep,$,undefined) {
-
-	pcep.supported_rfcs = ["RFC5440", "RFC5455", "RFC5520", "RFC5521"];
-
-	// List of PCEP Messages
-	pcep.messages = [];
-
-	// List of PCEP Objects
-	pcep.objects = [];
-
-	//List of PCEP Constructs
-	pcep.constructs = [];
-
-	//List of PCEP Elements lists
-	pcep.lists = [];
-
-	//List of PCEP choices
-	pcep.choices = [];
-
-	//Common Header
-	pcep_common_header = {
-		type: "header",
-		name: "Common Header",
-		rfc: "RFC5440"
-	};
-
-	//Objects & Object lists
-
-	//BANDWIDTH Object
-	pcep.objects["BANDWIDTH"] = {
-		type: "object",
-		name: "BANDWIDTH",
-		rfc: "RFC5440"
-	};
-
-	//CLOSE Object
-	pcep.objects["CLOSE"] = {
-		type: "object",
-		name: "CLOSE",
-		rfc: "RFC5440"
-	};
-
-	//CLASSTYPE Object
-	pcep.objects["CLASSTYPE"] = {
-		type: "object",
-		name: "CLASSTYPE",
-		rfc: "RFC5455"
-	};
-
-	//END-POINTS Object
-	pcep.objects["END-POINTS"] = {
-		type: "object",
-		name: "END-POINTS",
-		rfc: "RFC5440"
-	};
-
-	//ERO Object
-	pcep.objects["ERO"] = {
-		type: "object",
-		name: "ERO",
-		rfc: "RFC5440"
-	};
-
-	//IRO Object
-	pcep.objects["IRO"] = {
-		type: "object",
-		name: "ERO",
-		rfc: "RFC5440"
-	};
-
-	//LOADBALANCING Object
-	pcep.objects["LOAD-BALANCING"] = {
-		type: "object",
-		name: "LOAD-BALANCING",
-		rfc: "RFC5440"
-	};
-
-	//LSPA Object
-	pcep.objects["LSPA"] = {
-		type: "object",
-		name: "LSPA",
-		rfc: "RFC5440"
-	};
-
-	//METRIC Object
-	pcep.objects["METRIC"] = {
-		type: "object",
-		name: "METRIC",
-		rfc: "RFC5440"
-	};
-
-	//metric-list
-	pcep.lists["metric-list"] = {
-		type: "list",
-		name: "metric-list",
-		pcep_elem: pcep.objects["METRIC"],
-		rfc: "RFC5440"
-	};
-
-	//NO-PATH Object
-	pcep.objects["NO-PATH"] = {
-		type: "object",
-		name: "NO-PATH",
-		rfc: "RFC5440"
-	};
-
-	//NOTIFICATION Object
-	pcep.objects["NOTIFICATION"] = {
-		type: "object",
-		name: "NOTIFICATION",
-		rfc: "RFC5440"
-	};	
-
-	//NOTIFICATION-list
-	pcep.lists["notification-list"] ={
-		type: "list",
-		name: "notification-list",
-		pcep_elem: pcep.objects["NOTIFICATION"],
-		rfc: "RFC5440"
-	};
-
-	//OPEN Object
-	pcep.objects["OPEN"] = {
-		type: "object",
-		name: "OPEN",
-		rfc: "RFC5440"
-	};	
-
-	//PATH-KEY Object
-	pcep.objects["PATH-KEY"] = {
-		type: "object",
-		name: "PATH-KEY",
-		rfc: "RFC5520"
-	};		
-
-	//ERROR Object
-	pcep.objects["PCEP-ERROR"] = {
-		type: "object",
-		name: "PCEP-ERROR",
-		rfc: "RFC5440"
-	};	
-
-	//error-obj-list
-	pcep.lists["error-obj-list"] ={
-		type: "list",
-		name: "error-obj-list",
-		pcep_elem: pcep.objects["PCEP-ERROR"],
-		rfc: "RFC5440"
-	};
-
-	//RP Object
-	pcep.objects["RP"] = {
-		type: "object",
-		name: "RP",
-		rfc: "RFC5440"
-	};	
-
-	//request-id-list
-	pcep.lists["request-id-list"] ={
-		type: "list",
-		name: "request-id-list",
-		pcep_elem: pcep.objects["RP"],
-		rfc: "RFC5440"
-	};
-
-	//RRO Object
-	pcep.objects["RRO"] = {
-		type: "object",
-		name: "RRO",
-		rfc: "RFC5440"
-	};	
-
-	//LOADBALANCING Object
-	pcep.objects["SVEC"] = {
-		type: "object",
-		name: "SVEC",
-		rfc: "RFC5440"
-	};	
-
-	//XRO Object
-	pcep.objects["XRO"] = {
-		type: "object",
-		name: "XRO",
-		rfc: "RFC5521"
-	};	
-
-	//Constructs
-
-	//rro-bw-pair
-	pcep.constructs["rro-bw-pair"] = {
-		type: "object",
-		name: "rro-bw-pair",
-		elems: [ 
-			{
-				pcep_elem : pcep.objects["RRO"],
-				optional : false
-			}, {
-				pcep_elem :  pcep.objects["BANDWIDTH"],
-				optional : true
-			}
-		],
-		rfc: "RFC5440",
-		note: "In RFC 5440, rro-bw-pair was defined inside the request, not as a construct"
-	};	
-
-	//	attribute-list construct 
-	pcep.constructs["attribute-list"] = {
-			type: "construct",
-			name: "attribute-list",
-			elems: [{
-				pcep_elem : pcep.objects["LSPA"],
-				optional : true
-			}, {
-				pcep_elem : pcep.objects["BANDWIDTH"],
-				optional : true
-			},{
-				pcep_elem : pcep.lists["metric-list"],
-				optional : true
-			}, {
-				pcep_elem : pcep.objects["IRO"],
-				optional : true
-			}],
-		rfc: "RFC5440"
-	};
-
-	//	path construct 
-	pcep.constructs["path"] ={
-			type: "construct",
-			name: "path",
-			elems: [{
-				pcep_elem : pcep.objects["ERO"],
-				optional : true
-			}, {
-				pcep_elem : pcep.constructs["attribute-list"],
-				optional : true
-			}],
-		rfc: "RFC5440"
-	}
-
-
-	//attribute-list
-	pcep.lists["path-list"] ={
-		type: "list",
-		name: "path-list",
-		pcep_elem: pcep.constructs["path"],
-		rfc: "RFC5440"
-	};
-
-	// Segment-computation
-	pcep.constructs["segment-computation"] = {
-		type: "construct",
-		name: "segment-computation",
-		elems: [{
-			pcep_elem :  pcep.objects["END-POINTS"],
-			optional : false
-		},{
-			pcep_elem :  pcep.objects["CLASSTYPE"],
-			optional : true,
-			note: "RFC5455 mentions that CLASSTYPE object be inserted after the END-POINT objects is provided"
-		},{
-			pcep_elem :  pcep.objects["LSPA"],
-			optional : true
-		},{
-			pcep_elem :  pcep.objects["BANDWIDTH"],
-			optional : true
-		},{
-			pcep_elem :  pcep.lists["metric-list"],
-			optional : true
-		},{
-			pcep_elem :  pcep.constructs["rro-bw-pair"],
-			optional : true
-		},{
-			pcep_elem :  pcep.objects["IRO"],
-			optional : true
-		},{
-		pcep_elem :  pcep.objects["LOAD-BALANCING"],
-		optional : true
-		}, {
-			pcep_elem :  pcep.objects["XRO"],
-			optional : true,
-			note: "no ordering in RFC5521 is provided"
-		}],
-		rfc: "RFC5440",
-		note:  "The construct path-key-expansion really appeard in RF5220, but it contains all the objects of the request as defined in RFC5440"
-	};
-	
-	//path-key-expansion
-	pcep.constructs["path-key-expansion"] ={
-		type: "construct",
-		name: "path-key-expansion",
-		elems: [{
-			pcep_elem : pcep.objects["PATH-KEY"],
-			optional : false
-		}],
-		rfc: "RFC5520"
-	};
-
-	pcep.choices["seg-com-pke"] ={
-		type: "choice",
-		name: "seg-com-pke",
-		elems: [{
-			pcep_elem : pcep.constructs["segment-computation"],
-			optional : false
-		},{
-			pcep_elem : pcep.constructs["path-key-expansion"],
-			optional : false
-		}],
-		rfc: "RFC5520"
-	};
-
-	//	Construct request
-	pcep.constructs["request"] ={
-		type: "construct",
-		name: "request",
-		elems: [{
-			pcep_elem : pcep.objects["RP"],
-			optional : false
-		},{
-		pcep_elem : pcep.choices["seg-com-pke"],
-		optional : false
-		}
-		],
-		rfc: "RFC5440"
-	};
-
-	//request-list
-	pcep.lists["request-list"] = {
-		type: "list",
-		name: "request-list",
-		pcep_elem: pcep.constructs["request"],
-		rfc: "RFC5440"
-	};
-
-	//	Construct response
-	pcep.constructs["response"] ={
-		type: "construct",
-		name: "response",
-		elems: [ {
-			pcep_elem : pcep.objects["RP"],
-			optional : false
-		},{
-			pcep_elem : pcep.objects["NO-PATH"],
-			optional : true
-		},{
-			pcep_elem : pcep.constructs["attribute-list"],
-			optional : true
-		},{
-			pcep_elem : pcep.lists["path-list"],
-			optional : true
-		}],
-		rfc: "RFC5440"
-	};
-
-	//Lists
-
-	//response-list
-	pcep.lists["response-list"] ={
-		type: "list",
-		name: "response-list",
-		pcep_elem: pcep.constructs["response"],
-		rfc: "RFC5440"
-	};
-
-	//	Construct notify
-	pcep.constructs["notify"] ={
-		type: "construct",
-		name: "notify",
-		elems: [ {
-			pcep_elem : pcep.lists["request-id-list"],
-			optional : true
-		},{
-			pcep_elem : pcep.lists["notification-list"],
-			optional : false
-		}],
-		rfc: "RFC5440"
-	};
-
-	//Lists
-
-	//notify-list
-	pcep.lists["notify-list"] ={
-		type: "list",
-		name: "notify-list",
-		pcep_elem: pcep.constructs["notify"],
-		rfc: "RFC5440"
-	};
-
-	//svec-list
-	pcep.lists["svec-list"] ={
-		type: "list",
-		name: "svec-list",
-		pcep_elem: pcep.objects["SVEC"],
-		rfc: "RFC5440"
-	};
-
-	//error-open construct
-	pcep.constructs["error-open"] ={
-		type: "construct",
-		name: "error-open",
-		elems: [ {
-			pcep_elem : pcep.lists["error-obj-list"],
-			optional : true
-		},{
-			pcep_elem : pcep.objects["OPEN"],
-			optional : false
-		}],
-		rfc: "RFC5440"
-	};
-
-	//error construct
-	pcep.constructs["error"] ={
-		type: "construct",
-		name: "error",
-		elems: [ {
-			pcep_elem : pcep.lists["request-id-list"],
-			optional : true
-		},{
-			pcep_elem : pcep.lists["error-obj-list"],
-			optional : false
-		}],
-		rfc: "RFC5440"
-	};
-
-	//error-list
-	pcep.lists["error-list"] ={
-		type: "list",
-		name: "error-list",
-		pcep_elem: pcep.constructs["error"],
-		rfc: "RFC5440"
-	};
-
-	//err-choice
-	pcep.choices["err-choice"] ={
-		type: "choice",
-		name: "err-choice",
-		elems: [{
-		pcep_elem : pcep.constructs["error-open"],
-		optional : false
-		},{
-		pcep_elem : pcep.lists["error-obj-list"],
-		optional : false
-		}],
-		rfc: "RFC5440"
-	};
-
-	//Messages
-
-	//PCEP Open Message
-	pcep.messages["Open Message"] ={
-		type: "message",
-		name: "Open Message",
-		elems: [{
-			pcep_elem : pcep_common_header,
-			optional : false
-		},{
-			pcep_elem : pcep.objects["OPEN"],
-			optional : true
-		}],
-		rfc: "RFC5440"
-	};
-
-	//PCEP Keepalive Message
-	pcep.messages["Keepalive Message"] ={
-		type: "message",
-		name: "Keepalive Message",
-		elems: [{
-			pcep_elem : pcep_common_header,
-			optional : false
-		}],
-		rfc: "RFC5440"
-	};
-
-   //PCEP Request Message
-	pcep.messages["PCReqMessage"] ={
-		type: "message",
-		name: "PCReqMessage",
-		elems: [{
-			pcep_elem : pcep_common_header,
-			optional : false
-		},{
-			pcep_elem : pcep.lists["svec-list"],
-			optional : true
-		},{
-			pcep_elem : pcep.lists["request-list"],
-			optional : false
-		}],
-		rfc: "RFC5440"
-	};
-     
-	pcep.messages["PCRep Message"] ={
-		type: "message",
-		name: "PCRep Message",
-		elems: [{
-			pcep_elem : pcep_common_header,
-			optional : false
-		},{
-			pcep_elem : pcep.lists["response-list"],
-			optional : false
-		}],
-		rfc: "RFC5440"
-	};
-
-	 //PCEP Notification Message
-	pcep.messages["PCNtf Message"] ={
-		type: "message",
-		name: "PCNtf Message",
-		elems: [{
-			pcep_elem : pcep_common_header,
-			optional : false
-		},{
-			pcep_elem : pcep.lists["notify-list"],
-			optional : false
-		}],
-		rfc: "RFC5440"
-	};
-
-	//PCEP Error Message
-	pcep.messages["PCErr Message"] ={
-		type: "message",
-		name: "PCErr Message",
-		elems: [{
-		pcep_elem : pcep_common_header,
-		optional : false
-		}, {
-			pcep_elem : pcep.choices["err-choice"],
-			optional : false
-		},{
-			pcep_elem : pcep.lists["error-list"],
-			optional : false
-		} ],
-		rfc: "RFC5440"
-	};
-
-	//PCEP Close Message
-	pcep.messages["Close Message"] = {
-		type: "message",
-		elems: [{
-			pcep_elem : pcep_common_header,
-			optional : false
-			}, {
-			pcep_elem : pcep.objects["CLOSE"],
-			optional : false
-		}],
-		name: "Close Message",
-		rfc: "RFC5440"
-	};	
-
-
+grammar = {
+    "rfcs": [
+        "RFC5440", "RFC5520", "RFC5551","RFC5455"
+    ],
+    "elements": {
+        "Open Message": {
+            "name": "Open Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "OPEN",
+                    "optional": false
+                }
+            ],
+            "type": "message",
+            "rfc": "RFC5440"
+        },
+        "Common Header": {
+            "name": "Common Header",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "OPEN": {
+            "name": "OPEN",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "Keepalive Message": {
+            "name": "Keepalive Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                }
+            ],
+            "type": "message",
+            "rfc": "RFC5440"
+        },
+        "PCReq Message": {
+            "name": "PCReq Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "svec-list",
+                    "optional": true
+                },
+                {
+                    "elem": "request-list",
+                    "optional": false
+                }
+            ],
+            "type": "message",
+            "rfc": "RFC5440"
+        },
+        "svec-list": {
+            "name": "svec-list",
+            "elems": [
+                {
+                    "elem": "SVEC",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
+        },
+        "request-list": {
+            "name": "request-list",
+            "elems": [
+                {
+                    "elem": "request",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
+        },
+        "SVEC": {
+            "name": "SVEC",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+         "request": {
+            "name": "request",
+            "elems": [
+                {
+                    "elem": "RP",
+                    "optional": false
+                },
+                {
+                    "elem": "computation-choice",
+                    "optional": false
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5440"
+        },
+        "RP": {
+            "name": "RP",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "END-POINTS": {
+            "name": "END-POINTS",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "LSPA": {
+            "name": "LSPA",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "BANDWIDTH": {
+            "name": "BANDWIDTH",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "metric-list": {
+            "name": "metric-list",
+            "elems": [
+                {
+                    "elem": "METRIC",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
+        },
+        "rro-bw-pair": {
+            "name": "rro-bw-pair",
+            "elems": [
+                {
+                    "elem": "RRO",
+                    "optional": false
+                },
+                {
+                    "elem": "BANDWIDTH",
+                    "optional": true
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5440"
+        },
+        "IRO": {
+            "name": "IRO",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "LOAD-BALANCING": {
+            "name": "LOAD-BALANCING",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "RRO": {
+            "name": "RRO",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "METRIC": {
+            "name": "METRIC",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "PCRep Message": {
+            "name": "PCRep Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "response-list",
+                    "optional": false
+                }
+            ],
+            "type": "message",
+            "rfc": "RFC5440"
+        },
+        "response-list": {
+            "name": "response-list",
+            "elems": [
+                {
+                    "elem": "response",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
+        },
+        "response": {
+            "name": "response",
+            "elems": [
+                {
+                    "elem": "RP",
+                    "optional": false
+                },
+                {
+                    "elem": "NO-PATH",
+                    "optional": true
+                },
+                {
+                    "elem": "attribute-list",
+                    "optional": true
+                },
+                {
+                    "elem": "path-list",
+                    "optional": true
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5440"
+        },
+        "NO-PATH": {
+            "name": "NO-PATH",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "attribute-list": {
+            "name": "attribute-list",
+            "elems": [
+                {
+                    "elem": "LSPA",
+                    "optional": true
+                },
+                {
+                    "elem": "BANDWIDTH",
+                    "optional": true
+                },
+                {
+                    "elem": "metric-list",
+                    "optional": true
+                },
+                {
+                    "elem": "IRO",
+                    "optional": true
+                },
+                {
+                    "elem": "XRO",
+                    "optional": true
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5440"
+        },
+        "path-list": {
+            "name": "path-list",
+            "elems": [
+                {
+                    "elem": "path",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
+        },
+        "path": {
+            "name": "path",
+            "elems": [
+                {
+                    "elem": "ERO",
+                    "optional": false
+                },
+                {
+                    "elem": "attribute-list",
+                    "optional": false
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5440"
+        },
+        "ERO": {
+            "name": "ERO",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "PCNtf Message": {
+            "name": "PCNtf Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "notify-list",
+                    "optional": false
+                }
+            ],
+            "type": "message",
+            "rfc": "RFC5440"
+        },
+        "notify-list": {
+            "name": "notify-list",
+            "elems": [
+                {
+                    "elem": "notify",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
+        },
+        "notify": {
+            "name": "notify",
+            "elems": [
+                {
+                    "elem": "request-id-list",
+                    "optional": true
+                },
+                {
+                    "elem": "notification-list",
+                    "optional": false
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5440"
+        },
+        "request-id-list": {
+            "name": "request-id-list",
+            "elems": [
+                {
+                    "elem": "RP",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
+        },
+        "notification-list": {
+            "name": "notification-list",
+            "elems": [
+                {
+                    "elem": "NOTIFICATION",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
+        },
+        "NOTIFICATION": {
+            "name": "NOTIFICATION",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "PCErr Message": {
+            "name": "PCErr Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "err-choice",
+                    "optional": false
+                },
+                {
+                    "elem": "error-list",
+                    "optional": true
+                }
+            ],
+            "type": "message",
+            "rfc": "RFC5440"
+        },
+        "err-choice": {
+            "name": "err-choice",
+            "elems": [
+                {
+                    "elem": "err-open"
+                },
+                {
+                    "elem": "error"
+                }
+            ],
+            "type": "choice",
+            "rfc": "RFC5440"
+        },
+        "error-list": {
+            "name": "error-list",
+            "elems": [
+                {
+                    "elem": "error",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
+        },
+        "err-open": {
+            "name": "err-open",
+            "elems": [
+                {
+                    "elem": "error-obj-list",
+                    "optional": false
+                },
+                {
+                    "elem": "OPEN",
+                    "optional": true
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5440"
+        },
+        "error": {
+            "name": "error",
+            "elems": [
+                {
+                    "elem": "request-id-list",
+                    "optional": true
+                },
+                {
+                    "elem": "error-obj-list",
+                    "optional": false
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5440"
+        },
+        "error-obj-list": {
+            "name": "error-obj-list",
+            "elems": [
+                {
+                    "elem": "PCEP-ERROR",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5440"
+        },
+        "PCEP-ERROR": {
+            "name": "PCEP-ERROR",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "Close Message": {
+            "name": "Close Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "CLOSE",
+                    "optional": false
+                }
+            ],
+            "type": "message",
+            "rfc": "RFC5440"
+        },
+        "CLOSE": {
+            "name": "CLOSE",
+            "type": "object",
+            "rfc": "RFC5440"
+        },
+        "computation-choice": {
+            "name": "computation-choice",
+            "elems": [
+                {
+                    "elem": "segment-computation"
+                },
+                {
+                    "elem": "path-key-expansion"
+                }
+            ],
+            "type": "choice",
+            "rfc": "RFC5440"
+        },
+        "segment-computation": {
+            "name": "segment-computation",
+            "elems": [
+                {
+                    "elem": "END-POINTS",
+                    "optional": false
+                },
+                {
+                    "elem": "CLASSTYPE",
+                    "optional": true
+                },
+                {
+                    "elem": "LSPA",
+                    "optional": true
+                },
+                {
+                    "elem": "BANDWIDTH",
+                    "optional": true
+                },
+                {
+                    "elem": "metric-list",
+                    "optional": true
+                },
+                {
+                    "elem": "rro-bw-pair",
+                    "optional": true
+                },
+                {
+                    "elem": "IRO",
+                    "optional": true
+                },
+                {
+                    "elem": "IRO",
+                    "optional": true
+                },
+                {
+                    "elem": "LOAD-BALANCING",
+                    "optional": true
+                },
+                {
+                    "elem": "XRO",
+                    "optional": true
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5440"
+        },
+        "path-key-expansion": {
+            "name": "path-key-expansion",
+            "elems": [
+                {
+                    "elem": "PATH-KEY",
+                    "optional": false
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5520"
+        },
+        "PATH-KEY": {
+            "name": "PATH-KEY",
+            "type": "object",
+            "rfc": "RFC5520"
+        },
+        "XRO": {
+            "name": "XRO",
+            "type": "object",
+            "rfc": "RFC5521"
+        },
+        "CLASSTYPE": {
+            "name": "CLASSTYPE",
+            "type": "object",
+            "rfc": "RFC5455"
+        }
+
+    }
 }
-
-) (PCEPGrammar,jQuery);
-
-
