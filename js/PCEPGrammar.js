@@ -6,7 +6,9 @@ grammar= {
         "RFC5455",
         "RFC5541",
         "RFC5557",
-        "RFC5886"
+        "RFC5886",
+        "draft-ietf-pce-stateful-pce-08",
+        "draft-ietf-pce-pce-initiated-lsp-00"
     ],
     "elements": {
         "Open Message": {
@@ -727,6 +729,197 @@ grammar= {
             "name": "OVERLOAD",
             "type": "object",
             "rfc": "RFC5886"
+        },
+              "PCRpt Message": {
+            "name": "PCRpt Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "state-report-list",
+                    "optional": false
+                }
+            ],
+            "type": "message",
+            "rfc": "draft-ietf-pce-stateful-pce-08"
+        },
+                "state-report-list": {
+            "name": "state-report-list",
+            "elems": [
+                {
+                    "elem": "state-report",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "draft-ietf-pce-stateful-pce-08"
+        },
+        "state-report": {
+            "name": "state-report",
+            "elems": [
+                {
+                    "elem": "SRP",
+                    "optional": true
+                },
+                {
+                    "elem": "LSP",
+                    "optional": false
+                },
+                {
+                    "elem": "path",
+                    "optional": false
+                }
+            ],
+            "type": "construct",
+            "rfc": "draft-ietf-pce-stateful-pce-08"
+        },
+        "SRP": {
+            "name": "SRP",
+            "type": "object",
+            "rfc": "draft-ietf-pce-stateful-pce-08"
+        },
+        "LSP": {
+            "name": "LSP",
+            "type": "object",
+            "rfc": "draft-ietf-pce-stateful-pce-08"
+        },
+               "PCUpd Message": {
+            "name": "PCUpd Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "update-request-list",
+                    "optional": false
+                }
+            ],
+            "type": "message",
+            "rfc": "draft-ietf-pce-stateful-pce-08"
+        },
+        "update-request-list": {
+            "name": "update-request-list",
+            "elems": [
+                {
+                    "elem": "update-request",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "draft-ietf-pce-stateful-pce-08"
+        },
+        "update-request": {
+            "name": "update-request",
+            "elems": [
+                {
+                    "elem": "SRP",
+                    "optional": false
+                },
+                {
+                    "elem": "LSP",
+                    "optional": false
+                },
+                {
+                    "elem": "path",
+                    "optional": false
+                }
+            ],
+            "type": "construct",
+            "rfc": "draft-ietf-pce-stateful-pce-08"
+        },
+        "PCInitiate Message": {
+            "name": "PCInitiate Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "PCE-initiated-lsp-list",
+                    "optional": false
+                }
+            ],
+            "type": "message",
+            "rfc": "draft-ietf-pce-pce-initiated-lsp-00"
+        },
+        "PCE-initiated-lsp-list": {
+            "name": "PCE-initiated-lsp-list",
+            "elems": [
+                {
+                    "elem": "PCE-initiated-lsp-request",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "draft-ietf-pce-pce-initiated-lsp-00"
+        },
+        "PCE-initiated-lsp-request": {
+            "name": "PCE-initiated-lsp-request",
+            "elems": [
+                {
+                    "elem": "PCE-initiated-lsp-instantiation"
+                },
+                {
+                    "elem": "PCE-initiated-lsp-deletion"
+                }
+            ],
+            "type": "choice",
+            "rfc": "draft-ietf-pce-pce-initiated-lsp-00"
+        },
+        "PCE-initiated-lsp-instantiation": {
+            "name": "PCE-initiated-lsp-instantiation",
+            "elems": [
+                {
+                    "elem": "SRP",
+                    "optional": false
+                },
+                {
+                    "elem": "LSP",
+                    "optional": false
+                },
+                {
+                    "elem": "END-POINTS",
+                    "optional": false
+                },
+                {
+                    "elem": "ERO",
+                    "optional": false
+                },
+                {
+                    "elem": "attribute-list",
+                    "optional": true
+                }
+            ],
+            "type": "construct",
+            "rfc": "draft-ietf-pce-pce-initiated-lsp-00"
+        },
+        "PCE-initiated-lsp-deletion": {
+            "name": "PCE-initiated-lsp-deletion",
+            "elems": [
+                {
+                    "elem": "SRP",
+                    "optional": false
+                },
+                {
+                    "elem": "LSP",
+                    "optional": false
+                }
+            ],
+            "type": "construct",
+            "rfc": "draft-ietf-pce-pce-initiated-lsp-00"
+        },
+        "SRP": {
+            "name": "SRP",
+            "type": "object",
+            "rfc": "draft-ietf-pce-pce-initiated-lsp-00"
+        },
+        "LSP": {
+            "name": "LSP",
+            "type": "object",
+            "rfc": "draft-ietf-pce-pce-initiated-lsp-00"
         }
     }
 }

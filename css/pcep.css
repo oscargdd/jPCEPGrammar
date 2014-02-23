@@ -113,6 +113,13 @@ body{
 
 #RFCs .rfchoice {
 	margin-left: 15px;
+	display: inline;
+}
+
+#RFCs .rfchoicenb {
+	margin-left: 15px;
+	display: inline;
+	white-space: nowrap;
 }
 
 
