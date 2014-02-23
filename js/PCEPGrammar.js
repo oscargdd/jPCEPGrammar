@@ -5,7 +5,8 @@ grammar= {
         "RFC5551",
         "RFC5455",
         "RFC5541",
-        "RFC5557"
+        "RFC5557",
+        "RFC5886"
     ],
     "elements": {
         "Open Message": {
@@ -513,10 +514,6 @@ grammar= {
                     "optional": true
                 },
                 {
-                    "elem": "IRO",
-                    "optional": true
-                },
-                {
                     "elem": "LOAD-BALANCING",
                     "optional": true
                 },
@@ -606,6 +603,130 @@ grammar= {
             ],
             "type": "list",
             "rfc": "RFC5440"
+        },
+        "PCMonReq Message": {
+            "name": "PCMonReq Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "MONITORING",
+                    "optional": false
+                },
+                {
+                    "elem": "PCC-ID-REQ",
+                    "optional": false
+                },
+                {
+                    "elem": "pce-list",
+                    "optional": true
+                },
+                {
+                    "elem": "svec-list",
+                    "optional": true
+                },
+                {
+                    "elem": "request-list",
+                    "optional": true
+                }
+            ],
+            "type": "message",
+            "rfc": "RFC5886"
+        },
+        "MONITORING": {
+            "name": "MONITORING",
+            "type": "object",
+            "rfc": "RFC5886"
+        },
+        "PCC-ID-REQ": {
+            "name": "PCC-ID-REQ",
+            "type": "object",
+            "rfc": "RFC5886"
+        },
+        "pce-list": {
+            "name": "pce-list",
+            "elems": [
+                {
+                    "elem": "PCE-ID",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5886"
+        },
+        "PCE-ID": {
+            "name": "PCE-ID",
+            "type": "object",
+            "rfc": "RFC5886"
+        },
+        "PCMonRep Message": {
+            "name": "PCMonRep Message",
+            "elems": [
+                {
+                    "elem": "Common Header",
+                    "optional": false
+                },
+                {
+                    "elem": "MONITORING",
+                    "optional": false
+                },
+                {
+                    "elem": "PCC-ID-REQ",
+                    "optional": false
+                },
+                {
+                    "elem": "RP",
+                    "optional": true
+                },
+                {
+                    "elem": "metric-pce-list",
+                    "optional": true
+                }
+            ],
+            "type": "message",
+            "rfc": "RFC5886"
+        },
+        "metric-pce-list": {
+            "name": "metric-pce-list",
+            "elems": [
+                {
+                    "elem": "metric-pce",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC5886"
+        },
+        "metric-pce": {
+            "name": "metric-pce",
+            "elems": [
+                {
+                    "elem": "PCE-ID",
+                    "optional": false
+                },
+                {
+                    "elem": "PROC-TIME",
+                    "optional": true
+                },
+                {
+                    "elem": "OVERLOAD",
+                    "optional": true
+                }
+            ],
+            "type": "construct",
+            "rfc": "RFC5886"
+        },
+        "PROC-TIME": {
+            "name": "PROC-TIME",
+            "type": "object",
+            "rfc": "RFC5886"
+        },
+        "OVERLOAD": {
+            "name": "OVERLOAD",
+            "type": "object",
+            "rfc": "RFC5886"
         }
     }
 }

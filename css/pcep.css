@@ -49,9 +49,9 @@ body{
 #pcep_inputs {
 	background: #fff;
 	border: 6px solid #ccc;
-	height: 200px;
+	min-height: 400px;
 	padding-top: 0px;
-	width: 370px;
+	width: 400px;
 	margin:20px;
 	font-family:Verdana, sans-serif;
 	float: left;
@@ -110,9 +110,11 @@ body{
 	margin-bottom: 10px;
 }
 
-#RFCs input {
+
+#RFCs .rfchoice {
 	margin-left: 15px;
 }
+
 
 #mybutton{
 	margin-left: 70px;
@@ -182,6 +184,13 @@ body{
 
 #pcep_grammar span.object_RFC5520{
 	color: green;
+}
+
+#pcep_grammar span.object_RFC5541{
+	color: purple;
+}
+#pcep_grammar span.object_RFC5557{
+	color: brown;
 }
 
 

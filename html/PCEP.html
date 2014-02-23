@@ -15,7 +15,7 @@
     <div id="logo">
       <img src="../img/PACE_logo_color_50mm.png"/> 
     </div>
-    <div id="page_title">Play with the grammar of <span> PCEP</span>
+    <div id="page_title">Reference of <span>PCEP</span> grammar 
     </div>
   </header>
 
@@ -33,20 +33,34 @@
             <option value="PCNtf Message">Notification (PCNtf) Message</option>
             <option value="PCErr Message">PCErr Message</option>
             <option value="Close Message">Close Message</option>
+            <option value="PCMonReq Message">PCMonReq Message</option>
             <option value="PCRpt Message">PCRpt Message</option>
              <option value="PCUpd Message">PCUpd Message</option>           
           </select>
         </label>
       </div>
+      <button id="mybutton" type="button" form= "pcep_inputs" onclick="jPCEPGrammarDraw.draw_message(message_name.value)">Show grammar</button> 
       <div id = "RFCs"> 
-        <input type="checkbox" name="rfcs[]" value="RFC5440" checked> RFC 5440</input>
-        <input type="checkbox" name="rfcs[]" value="RFC5520" checked> RFC 5520</input>
-        <input type="checkbox" name="rfcs[]" value="RFC5521" checked> RFC 5521</input>
-        <input type="checkbox" name="rfcs[]" value="RFC5455" checked> RFC 5455</input>
-        <input type="checkbox" name="rfcs[]" value="RFC5541" checked> RFC 5541</input>
-        <input type="checkbox" name="rfcs[]" value="RFC5557" checked> RFC 5557</input>
+        <div class="rfchoice">RFC 5440:<input type="checkbox" name="rfcs[]" value="RFC5440" checked /></div>
+        <div class="rfchoice">RFC 5520:<input type="checkbox" name="rfcs[]" value="RFC5520" checked /></div>
+        <div class="rfchoice">RFC 5521:<input type="checkbox" name="rfcs[]" value="RFC5521" checked /> </div>
+        <div class="rfchoice">RFC 5455:<input type="checkbox" name="rfcs[]" value="RFC5455" checked /> </div>
+        <div class="rfchoice">RFC 5541:<input type="checkbox" name="rfcs[]" value="RFC5541" checked /></div>
+        <div class="rfchoice">RFC 5557:<input type="checkbox" name="rfcs[]" value="RFC5557" checked /></div>
+        <div class="rfchoice">RFC 5886:<input type="checkbox" name="rfcs[]" value="RFC5886" checked /></div>
+        <div class="rfchoice">RFC 6006:<input type="checkbox" name="rfcs[]" value="RFC6006" checked /></div>
+        <div class="rfchoice">draft-ietf-pce-gmpls-pcep-extensions-09: <input type="checkbox" name="rfcs[]" value="draft-ietf-pce-gmpls-pcep-extensions-09" checked /></div>
+        <div class="rfchoice">draft-ietf-pce-inter-layer-ext-08: <input type="checkbox" name="rfcs[]" value="draft-ietf-pce-inter-layer-ext-08" checked /></div>
+        <div class="rfchoice">draft-ietf-pce-hierarchy-extensions-01<input type="checkbox" name="rfcs[]" value="draft-ietf-pce-hierarchy-extensions-01" checked /></div>
+        <div class="rfchoice">draft-ietf-pce-wson-routing-wavelength-10<input type="checkbox" name="rfcs[]" value="draft-ietf-pce-wson-routing-wavelength-10" checked /></div>
+        <div class="rfchoice">draft-ietf-pce-vendor-constraints-11<input type="checkbox" name="rfcs[]" value="draft-ietf-pce-vendor-constraints-11" checked /></div>
+        <div class="rfchoice">draft-ietf-pce-stateful-pce-08<input type="checkbox" name="rfcs[]" value="draft-ietf-pce-pcep-stateful-pce-gmpls-00" checked /></div>
+        <div class="rfchoice">draft-ietf-pce-pcep-service-aware-03<input type="checkbox" name="rfcs[]" value="draft-ietf-pce-pcep-service-aware-03" checked /></div>
+        <div class="rfchoice">draft-ietf-pce-pcep-inter-domain-p2mp-procedures-05<input type="checkbox" name="rfcs[]" value="draft-ietf-pce-pcep-inter-domain-p2mp-procedures-05" checked /></div>
+        <div class="rfchoice">draft-ietf-pce-pcep-domain-sequence-04:<input type="checkbox" name="rfcs[]" value="draft-ietf-pce-pcep-domain-sequence-04 " checked /></div>
+        <div class="rfchoice">draft-ietf-pce-pce-initiated-lsp-00:<input type="checkbox" name="rfcs[]" value="draft-ietf-pce-pce-initiated-lsp-00" checked /></div>
       </div>
-      <button id="mybutton" type="button" form= "pcep_inputs" onclick="jPCEPGrammarDraw.draw_message(message_name.value)">Show grammar</button>  
+       
     </form>
     
     <div id="pcep_grammar_zone">    
