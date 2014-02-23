@@ -1,11 +1,24 @@
 jPCEPGrammar
 ============
 
-Web page and javascript library to learn PCEP grammar. Based on HTML and javascript. 
+PCEP (Path Computation Element Protocol) grammar reference. Based on HTML and javascript. 
 
-Support for RFC 5440
+* --- STILL UNDER DEVELOPEMENT AND REVIEW --- *
 
-See example in http://www.ogondio.com/jPCEPGrammar/html/PCEP.html
+Support for grammar of:       
+		RFC5440
+        RFC5520
+        RFC5551
+        RFC5455
+        RFC5541
+        RFC5557
+        RFC5886
+        draft-ietf-pce-stateful-pce-08
+        draft-ietf-pce-pce-initiated-lsp-00 
+
+
+
+See example in http://http://pcep.ogondio.com
 
 
 Acknowledgement to ICT PACE project http://www.ict-pace.net/
