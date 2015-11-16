@@ -7,8 +7,10 @@ grammar= {
         "RFC5541",
         "RFC5557",
         "RFC5886",
+        "RFC7449",
+        "RFC7150",
         "draft-ietf-pce-stateful-pce-12",
-        "draft-ietf-pce-pce-initiated-lsp-00",
+        "draft-ietf-pce-pce-initiated-lsp-05",
         "draft-ietf-pce-gmpls-pcep-extensions-11",
         "draft-ietf-pce-inter-layer-ext-08",
         "draft-ietf-pce-hierarchy-extensions-02"
@@ -496,6 +498,10 @@ grammar= {
             "name": "segment-computation",
             "elems": [
                 {
+                    "elem": "vendor-info-list",
+                    "optional": true
+                },
+                {
                     "elem": "END-POINTS",
                     "optional": false
                 },
@@ -601,10 +607,21 @@ grammar= {
             "type": "object",
             "rfc": "RFC5541"
         },
-        "vendor-info-list": {
-            "name": "vendor-info-list",
+        "VENDOR-INFORMATION": {
+            "name": "VENDOR-INFORMATION",
             "type": "object",
-            "rfc": "RFC5557"
+            "rfc": "RFC7150"
+        },
+         "vendor-info-list": {
+            "name": "vendor-info-list",
+            "elems": [
+                {
+                    "elem": "VENDOR-INFORMATION",
+                    "optional": false
+                }
+            ],
+            "type": "list",
+            "rfc": "RFC7150"
         },
         "GC": {
             "name": "GC",
