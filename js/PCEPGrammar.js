@@ -7,7 +7,7 @@ grammar= {
         "RFC5541",
         "RFC5557",
         "RFC5886",
-        "draft-ietf-pce-stateful-pce-08",
+        "draft-ietf-pce-stateful-pce-12",
         "draft-ietf-pce-pce-initiated-lsp-00"
     ],
     "elements": {
@@ -117,6 +117,11 @@ grammar= {
             "name": "END-POINTS",
             "type": "object",
             "rfc": "RFC5440"
+        },
+        "LSP": {
+            "name": "LSP",
+            "type": "object",
+            "rfc": "draft-ietf-pce-stateful-pce-12"
         },
         "LSPA": {
             "name": "LSPA",
@@ -743,7 +748,7 @@ grammar= {
                 }
             ],
             "type": "message",
-            "rfc": "draft-ietf-pce-stateful-pce-08"
+            "rfc": "draft-ietf-pce-stateful-pce-12"
         },
                 "state-report-list": {
             "name": "state-report-list",
@@ -754,7 +759,7 @@ grammar= {
                 }
             ],
             "type": "list",
-            "rfc": "draft-ietf-pce-stateful-pce-08"
+            "rfc": "draft-ietf-pce-stateful-pce-12"
         },
         "state-report": {
             "name": "state-report",
@@ -773,17 +778,17 @@ grammar= {
                 }
             ],
             "type": "construct",
-            "rfc": "draft-ietf-pce-stateful-pce-08"
+            "rfc": "draft-ietf-pce-stateful-pce-12"
         },
         "SRP": {
             "name": "SRP",
             "type": "object",
-            "rfc": "draft-ietf-pce-stateful-pce-08"
+            "rfc": "draft-ietf-pce-stateful-pce-12"
         },
         "LSP": {
             "name": "LSP",
             "type": "object",
-            "rfc": "draft-ietf-pce-stateful-pce-08"
+            "rfc": "draft-ietf-pce-stateful-pce-12"
         },
                "PCUpd Message": {
             "name": "PCUpd Message",
@@ -798,7 +803,7 @@ grammar= {
                 }
             ],
             "type": "message",
-            "rfc": "draft-ietf-pce-stateful-pce-08"
+            "rfc": "draft-ietf-pce-stateful-pce-12"
         },
         "update-request-list": {
             "name": "update-request-list",
@@ -809,7 +814,7 @@ grammar= {
                 }
             ],
             "type": "list",
-            "rfc": "draft-ietf-pce-stateful-pce-08"
+            "rfc": "draft-ietf-pce-stateful-pce-12"
         },
         "update-request": {
             "name": "update-request",
@@ -828,7 +833,7 @@ grammar= {
                 }
             ],
             "type": "construct",
-            "rfc": "draft-ietf-pce-stateful-pce-08"
+            "rfc": "draft-ietf-pce-stateful-pce-12"
         },
         "PCInitiate Message": {
             "name": "PCInitiate Message",
