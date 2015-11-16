@@ -8,7 +8,10 @@ grammar= {
         "RFC5557",
         "RFC5886",
         "draft-ietf-pce-stateful-pce-12",
-        "draft-ietf-pce-pce-initiated-lsp-00"
+        "draft-ietf-pce-pce-initiated-lsp-00",
+        "draft-ietf-pce-gmpls-pcep-extensions-11",
+        "draft-ietf-pce-inter-layer-ext-08",
+        "draft-ietf-pce-hierarchy-extensions-02"
     ],
     "elements": {
         "Open Message": {
@@ -211,6 +214,10 @@ grammar= {
                 {
                     "elem": "RP",
                     "optional": false
+                },
+                {
+                    "elem": "LSP",
+                    "optional": true
                 },
                 {
                     "elem": "NO-PATH",
@@ -493,9 +500,13 @@ grammar= {
                     "optional": false
                 },
                 {
-                    "elem": "CLASSTYPE",
+                    "elem": "LSP",
                     "optional": true
                 },
+                {
+                    "elem": "CLASSTYPE",
+                    "optional": true
+                },           
                 {
                     "elem": "LSPA",
                     "optional": true
@@ -785,12 +796,8 @@ grammar= {
             "type": "object",
             "rfc": "draft-ietf-pce-stateful-pce-12"
         },
-        "LSP": {
-            "name": "LSP",
-            "type": "object",
-            "rfc": "draft-ietf-pce-stateful-pce-12"
-        },
-               "PCUpd Message": {
+
+        "PCUpd Message": {
             "name": "PCUpd Message",
             "elems": [
                 {
@@ -918,11 +925,6 @@ grammar= {
         },
         "SRP": {
             "name": "SRP",
-            "type": "object",
-            "rfc": "draft-ietf-pce-pce-initiated-lsp-00"
-        },
-        "LSP": {
-            "name": "LSP",
             "type": "object",
             "rfc": "draft-ietf-pce-pce-initiated-lsp-00"
         }
